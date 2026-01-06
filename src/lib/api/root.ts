@@ -1,5 +1,10 @@
 import { createCallerFactory, createTRPCRouter } from "./trpc";
-// import all routers here
+import { galleryRouter } from "./routers/gallery";
+import { galleryMediaRouter } from "./routers/galleryMedia";
+import { clientRouter } from "./routers/client";
+import { favoriteRouter } from "./routers/favorite";
+import { commentRouter } from "./routers/comment";
+import { analyticsRouter } from "./routers/analytics";
 
 /**
  * This is the primary router for your server.
@@ -7,7 +12,12 @@ import { createCallerFactory, createTRPCRouter } from "./trpc";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  // add routers here
+  gallery: galleryRouter,
+  galleryMedia: galleryMediaRouter,
+  client: clientRouter,
+  favorite: favoriteRouter,
+  comment: commentRouter,
+  analytics: analyticsRouter,
 });
 
 // export type definition of API

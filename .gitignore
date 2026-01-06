@@ -1,6 +1,4 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
+# Dependencies
 /node_modules
 /.pnp
 .pnp.*
@@ -10,39 +8,99 @@
 !.yarn/releases
 !.yarn/versions
 
-# testing
-/coverage
-
-# next.js
+# Next.js
 /.next/
 /out/
-
-# production
 /build
 
-# misc
-.DS_Store
-*.pem
+# Testing
+/coverage
+/test-results
+/playwright-report
+playwright.config.ts
 
-# debug
+# Environment
+.env
+.env.*
+!.env.example
+
+# Debug logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env
-.env.local
-.env.staging
-.env.production
+# OS
+.DS_Store
+*.pem
+Thumbs.db
 
-# vercel
-.vercel
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.cursor-scratchpad
 
-# typescript
+# TypeScript
 *.tsbuildinfo
 next-env.d.ts
 
-.cursor-scratchpad
+# Vercel (not used - K8s deployment)
+.vercel
 
+# Storybook
 *storybook.log
+storybook-static/
+
+# ===========================================
+# BMAD & Development Tooling (not for prod)
+# ===========================================
+
+# BMAD methodology files
+_bmad/
+_bmad-output/
+
+# Documentation (dev only)
+docs/
+*.md
+!README.md
+
+# Analysis & planning files
+ANALYSIS_SUMMARY.txt
+IMPROVEMENTS.md
+CLEANUP-SUMMARY.md
+MENU-HEIGHT-UPDATE.md
+NAVBAR-UPDATE.md
+NEW-PAGES.md
+
+# ===========================================
+# Claude & AI Tooling
+# ===========================================
+
+.claude/
+.claude-flow/
+.hive-mind/
+.swarm/
+memory/
+coordination/
+.mcp.json
+claude-flow.config.json
+claude-flow
+claude-flow.bat
+claude-flow.ps1
+hive-mind-prompt-*.txt
+
+# Database files (dev)
+*.db
+*.db-journal
+*.db-wal
+*.sqlite
+*.sqlite-journal
+*.sqlite-wal
+
+# ===========================================
+# CI/CD (GitHub not used - Gitea)
+# ===========================================
+
+.github/

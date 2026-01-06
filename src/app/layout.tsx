@@ -6,10 +6,11 @@ import { Metadata } from "next";
 import ClientProvider from "@/components/ClientProvider";
 import { ThemeProvider } from "@/components/theme/ThemeProvider";
 import { ThemeAwareToast } from "@/components/theme/ThemeAwareToast";
+import { ConditionalLayout } from "@/components/layout/ConditionalLayout";
 
 export const metadata: Metadata = {
-  title: "",
-  description: "",
+  title: "elGato Photo Paris | Photographe Professionnel à Paris",
+  description: "Photographe d'art et créateur de contenu à Paris. Spécialisé dans les portraits, mariages, événements et création de contenu visuel. Plus de 800 créations depuis 2018.",
   icons: {
     icon: "/favicon.ico",
   },
@@ -26,7 +27,7 @@ export default function RootLayout({
         <ThemeProvider defaultTheme="system" enableSystem>
           <ClientProvider>
             <TRPCReactProvider>
-              {children}
+              <ConditionalLayout>{children}</ConditionalLayout>
               <ThemeAwareToast />
             </TRPCReactProvider>
           </ClientProvider>

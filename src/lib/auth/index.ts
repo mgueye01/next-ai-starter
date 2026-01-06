@@ -77,6 +77,18 @@ export const authOptions: NextAuthOptions = {
   },
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
+    async redirect({ url, baseUrl }) {
+      // After sign in, redirect to admin dashboard
+      if (url.startsWith(baseUrl)) {
+        // If it's just the base URL or signin page, redirect to admin
+        if (url === baseUrl || url === `${baseUrl}/` || url.includes('/auth/')) {
+          return `${baseUrl}/admin`;
+        }
+        return url;
+      }
+      // Default to admin page
+      return `${baseUrl}/admin`;
+    },
     async signIn({ user }) {
       try {
         const email = user?.email;

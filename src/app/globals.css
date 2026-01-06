@@ -4,6 +4,180 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Portfolio animations and utilities */
+@keyframes shimmer {
+  0% { 
+    transform: translateX(-100%); 
+  }
+  100% { 
+    transform: translateX(100%); 
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 1.5s infinite;
+}
+
+/* Masonry layout utilities */
+.masonry-item {
+  break-inside: avoid;
+  page-break-inside: avoid;
+}
+
+/* Glass morphism effects */
+.glass-surface {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* Mobile-optimized glass effects */
+@media (max-width: 768px) {
+  .glass-surface-mobile {
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+}
+
+/* Image hover effects */
+.image-hover-overlay {
+  position: relative;
+  overflow: hidden;
+}
+
+.image-hover-overlay::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, rgba(207, 171, 141, 0.1), rgba(187, 220, 229, 0.1));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.image-hover-overlay:hover::after {
+  opacity: 1;
+}
+
+/* Enhanced mobile scrolling and performance */
+@media (max-width: 768px) {
+  * {
+    -webkit-overflow-scrolling: touch;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Prevent zoom on input focus */
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+  
+  /* Touch-friendly button sizing */
+  button,
+  [role="button"],
+  input[type="submit"],
+  input[type="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Optimize image rendering on mobile */
+  img {
+    image-rendering: optimizeSpeed;
+    image-rendering: -webkit-optimize-contrast;
+  }
+}
+
+/* Performance optimizations */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+/* Mobile-specific performance optimizations */
+@media (max-width: 768px) {
+  .mobile-optimized {
+    will-change: transform, opacity;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+  
+  /* Optimize animations for mobile */
+  .mobile-animation {
+    animation-duration: 0.3s;
+    animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Reduce motion for users who prefer it */
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-animation {
+      animation: none;
+      transition: none;
+    }
+  }
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+@media (min-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(187, 220, 229, 0.1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(207, 171, 141, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(207, 171, 141, 0.5);
+}
+
+/* Hide scrollbar on mobile for cleaner look */
+@media (max-width: 768px) {
+  .mobile-hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .mobile-hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Line clamping utility */
+.line-clamp-3 {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+}
+
 *,
 *::before,
 *::after {
@@ -16,7 +190,8 @@ body {
 }
 
 body {
-  @apply flex w-full flex-col bg-gradient-to-br from-blue-50 to-red-50 text-slate-900 dark:from-slate-900 dark:to-slate-800 dark:text-slate-100;
+  @apply flex w-full flex-col text-foreground;
+  background: hsl(var(--bg-white));
 }
 
 #__next {
@@ -85,54 +260,217 @@ body {
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 47.4% 11.2%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 47.4% 11.2%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 100% 50%;
-    --destructive-foreground: 210 40% 98%;
-    --ring: 215 20.2% 65.1%;
+    /* elGato Photo - White Background with Warm Earthy Accents */
+    --bg-white: 0 0% 100%; /* Pure white background */
+    --bg-cream: 60 21% 92%; /* #ECEEDF */
+    --bg-teal: 188 36% 80%; /* #BBDCE5 */
+    --bg-beige: 32 33% 78%; /* #D9C4B0 */
+    --bg-brown: 32 33% 69%; /* #CFAB8D */
+    --text-dark: 32 33% 25%;
+    --text-muted: 32 20% 45%;
+    --primary: 188 36% 80%; /* Light teal */
+    --secondary: 32 33% 78%; /* Beige */
+    --accent: 32 33% 69%; /* Brown */
+    --danger: 0 84% 60%;
+    --warning: 38 92% 50%;
+    --success: 142 76% 36%;
+    --info: 188 36% 80%;
+
+    /* Shadcn compatibility */
+    --background: var(--bg-white);
+    --foreground: var(--text-dark);
+    --muted: var(--bg-cream);
+    --muted-foreground: var(--text-muted);
+    --popover: var(--bg-white);
+    --popover-foreground: var(--text-dark);
+    --card: var(--bg-white);
+    --card-foreground: var(--text-dark);
+    --accent: var(--bg-beige);
+    --accent-foreground: var(--text-dark);
+    --destructive: var(--danger);
+    --destructive-foreground: var(--bg-white);
+    --ring: var(--primary);
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 224 71% 4%;
-    --foreground: 213 31% 91%;
-    --muted: 223 47% 11%;
-    --muted-foreground: 215.4 16.3% 56.9%;
-    --accent: 216 34% 17%;
-    --accent-foreground: 210 40% 98%;
-    --popover: 224 71% 4%;
-    --popover-foreground: 215 20.2% 65.1%;
-    --border: 216 34% 17%;
-    --input: 216 34% 17%;
-    --card: 224 71% 4%;
-    --card-foreground: 213 31% 91%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 1.2%;
-    --secondary: 222.2 47.4% 11.2%;
-    --secondary-foreground: 210 40% 98%;
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 210 40% 98%;
-    --ring: 216 34% 17%;
+    /* Dark mode overrides if needed */
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary-foreground: 0 0% 98%;
+    --destructive-foreground: 0 0% 98%;
   }
 }
 
 @layer base {
   body {
     @apply bg-background text-foreground font-sans antialiased;
+  }
+}
+
+@layer utilities {
+  .shadow-input {
+    box-shadow: 0px 2px 3px -1px rgba(0,0,0,0.1), 0px 1px 0px 0px rgba(25,28,33,0.02), 0px 0px 0px 1px rgba(25,28,33,0.08);
+  }
+  
+  /* Force consistent logo sizing across all pages */
+  .logo {
+    height: 52px !important;
+    width: auto !important;
+    min-height: 52px !important;
+    max-height: 52px !important;
+    object-fit: contain !important;
+  }
+  
+  /* Hero Section Enhancements */
+  .hero-gradient-text {
+    background: linear-gradient(135deg, #6B5B47 0%, #8B7355 50%, #CFAB8D 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .hero-stats-card {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    transition: all 0.3s ease;
+  }
+  
+  .hero-stats-card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(207, 171, 141, 0.4);
+    box-shadow: 0 8px 32px rgba(107, 91, 71, 0.12);
+  }
+  
+  /* Mobile-first responsive enhancements */
+  @media (max-width: 640px) {
+    .hero-title {
+      line-height: 0.9;
+      letter-spacing: -0.02em;
+    }
+    
+    .hero-stats-grid {
+      gap: 0.75rem;
+    }
+    
+    .hero-cta-mobile {
+      width: 100%;
+      min-width: unset;
+      padding: 1rem 1.5rem;
+      font-size: 1rem;
+    }
+  }
+  
+  /* Touch-friendly gallery interactions */
+  .gallery-item {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .gallery-item:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+  
+  /* Mobile lightbox optimizations */
+  .lightbox-mobile {
+    -webkit-user-select: none;
+    user-select: none;
+    touch-action: pan-y;
+  }
+  
+  @media (max-width: 768px) {
+    .lightbox-mobile {
+      touch-action: pan-x;
+    }
+  }
+  
+  /* Enhanced mobile form styling */
+  .mobile-form-input {
+    -webkit-appearance: none;
+    appearance: none;
+    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+  }
+  
+  .mobile-form-input:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(187, 220, 229, 0.3);
+  }
+  
+  /* Mobile navigation improvements */
+  @media (max-width: 768px) {
+    .mobile-nav {
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+    }
+  }
+  
+  /* Pull-to-refresh styling */
+  .pull-to-refresh {
+    overscroll-behavior-y: contain;
+  }
+  
+  /* Optimized mobile typography */
+  @media (max-width: 640px) {
+    h1 {
+      font-size: clamp(2rem, 8vw, 3.5rem);
+      line-height: 1.1;
+    }
+    
+    h2 {
+      font-size: clamp(1.5rem, 6vw, 2.5rem);
+      line-height: 1.2;
+    }
+    
+    p {
+      line-height: 1.6;
+      font-size: clamp(0.875rem, 4vw, 1.125rem);
+    }
+  }
+  
+  /* Enhanced button effects */
+  .hero-btn-primary {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .hero-btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.6s ease;
+  }
+  
+  .hero-btn-primary:hover::before {
+    left: 100%;
+  }
+  
+  /* Typography improvements */
+  .hero-leading-relaxed {
+    line-height: 1.75;
+  }
+  
+  @media (max-width: 768px) {
+    .hero-leading-relaxed {
+      line-height: 1.6;
+    }
   }
 }
 
@@ -160,4 +498,65 @@ body {
 .animate-wave {
   animation: wave 1.5s infinite;
   transform-origin: 70% 70%;
+}
+
+/* Hero section specific animations */
+@keyframes heroFadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes heroScaleIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes heroSlideInLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes heroSlideInRight {
+  0% {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-hero-fade-in-up {
+  animation: heroFadeInUp 0.8s ease-out forwards;
+}
+
+.animate-hero-scale-in {
+  animation: heroScaleIn 0.6s ease-out forwards;
+}
+
+.animate-hero-slide-in-left {
+  animation: heroSlideInLeft 0.7s ease-out forwards;
+}
+
+.animate-hero-slide-in-right {
+  animation: heroSlideInRight 0.7s ease-out forwards;
 }

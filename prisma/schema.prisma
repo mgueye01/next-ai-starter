@@ -22,6 +22,179 @@ model User {
   isAdmin        Boolean   @default(false)
   accounts       Account[]
   sessions       Session[]
+  galleries      Gallery[]
+}
+
+// ==================== CLIENT GALLERY MODELS ====================
+
+model Client {
+  id             String    @id @default(cuid())
+  email          String    @unique
+  name           String
+  phone          String?
+  hashedPassword String
+  avatar         String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  lastLoginAt    DateTime?
+
+  galleries      ClientGalleryAccess[]
+  favorites      Favorite[]
+  comments       Comment[]
+  downloads      Download[]
+}
+
+model Gallery {
+  id             String        @id @default(cuid())
+  title          String
+  slug           String        @unique
+  description    String?
+  coverImage     String?
+  eventDate      DateTime?
+  status         GalleryStatus @default(DRAFT)
+  accessCode     String?
+  expiresAt      DateTime?
+  allowDownload  Boolean       @default(true)
+  allowFavorites Boolean       @default(true)
+  allowComments  Boolean       @default(true)
+  allowSharing   Boolean       @default(true)
+  watermark      Boolean       @default(false)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  createdById    String
+
+  createdBy      User          @relation(fields: [createdById], references: [id])
+  media          GalleryMedia[]
+  clientAccess   ClientGalleryAccess[]
+  guestSessions  GuestSession[]
+  analytics      GalleryAnalytics[]
+}
+
+enum GalleryStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model GalleryMedia {
+  id           String    @id @default(cuid())
+  galleryId    String
+  type         MediaType @default(PHOTO)
+  filename     String
+  originalUrl  String
+  thumbnailUrl String?
+  mediumUrl    String?
+  width        Int?
+  height       Int?
+  size         Int?
+  duration     Int?
+  sortOrder    Int       @default(0)
+  metadata     Json?
+  createdAt    DateTime  @default(now())
+
+  gallery      Gallery   @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+  favorites    Favorite[]
+  comments     Comment[]
+  downloads    Download[]
+}
+
+enum MediaType {
+  PHOTO
+  VIDEO
+}
+
+model ClientGalleryAccess {
+  id        String     @id @default(cuid())
+  clientId  String
+  galleryId String
+  role      AccessRole @default(VIEWER)
+  grantedAt DateTime   @default(now())
+
+  client    Client     @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  gallery   Gallery    @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+
+  @@unique([clientId, galleryId])
+}
+
+enum AccessRole {
+  VIEWER
+  COLLABORATOR
+  OWNER
+}
+
+model GuestSession {
+  id         String    @id @default(cuid())
+  galleryId  String
+  name       String?
+  email      String?
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime  @default(now())
+  expiresAt  DateTime
+
+  gallery    Gallery   @relation(fields: [galleryId], references: [id], onDelete: Cascade)
+  favorites  Favorite[]
+  comments   Comment[]
+  downloads  Download[]
+}
+
+model Favorite {
+  id             String        @id @default(cuid())
+  mediaId        String
+  clientId       String?
+  guestSessionId String?
+  createdAt      DateTime      @default(now())
+
+  media          GalleryMedia  @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+  client         Client?       @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  guestSession   GuestSession? @relation(fields: [guestSessionId], references: [id], onDelete: Cascade)
+
+  @@unique([mediaId, clientId])
+  @@unique([mediaId, guestSessionId])
+}
+
+model Comment {
+  id             String        @id @default(cuid())
+  mediaId        String
+  clientId       String?
+  guestSessionId String?
+  content        String
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  media          GalleryMedia  @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+  client         Client?       @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  guestSession   GuestSession? @relation(fields: [guestSessionId], references: [id], onDelete: Cascade)
+}
+
+model Download {
+  id             String        @id @default(cuid())
+  mediaId        String?
+  galleryId      String?
+  clientId       String?
+  guestSessionId String?
+  type           DownloadType  @default(SINGLE)
+  createdAt      DateTime      @default(now())
+
+  media          GalleryMedia? @relation(fields: [mediaId], references: [id])
+  client         Client?       @relation(fields: [clientId], references: [id])
+  guestSession   GuestSession? @relation(fields: [guestSessionId], references: [id])
+}
+
+enum DownloadType {
+  SINGLE
+  SELECTION
+  ALL
+}
+
+model GalleryAnalytics {
+  id        String   @id @default(cuid())
+  galleryId String
+  event     String
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  gallery   Gallery  @relation(fields: [galleryId], references: [id], onDelete: Cascade)
 }
 
 model Account {
