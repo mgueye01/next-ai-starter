@@ -9,7 +9,8 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm ci
+# Ignore postinstall scripts (prisma generate) - schema not available yet
+RUN npm ci --ignore-scripts
 
 # Stage 2: Builder
 FROM node:20-alpine AS builder
