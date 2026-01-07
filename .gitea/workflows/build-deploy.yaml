@@ -22,14 +22,11 @@ jobs:
   lint-and-test:
     name: Lint & Test
     runs-on: ubuntu-latest
+    container:
+      image: node:20-bookworm
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
 
       - name: Install dependencies
         run: npm ci
@@ -48,25 +45,21 @@ jobs:
     needs: lint-and-test
     runs-on: ubuntu-latest
     if: gitea.event_name == 'push' && gitea.ref == 'refs/heads/main'
+    container:
+      image: docker:27-cli
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install Docker CLI
+      - name: Install buildx
         run: |
-          apt-get update
-          apt-get install -y ca-certificates curl
-          install -m 0755 -d /etc/apt/keyrings
-          curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
-          chmod a+r /etc/apt/keyrings/docker.asc
-          echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian bookworm stable" > /etc/apt/sources.list.d/docker.list
-          apt-get update
-          apt-get install -y docker-ce-cli docker-buildx-plugin
+          mkdir -p ~/.docker/cli-plugins
+          wget -O ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/v0.14.0/buildx-v0.14.0.linux-amd64
+          chmod +x ~/.docker/cli-plugins/docker-buildx
 
       - name: Create buildx builder with remote BuildKit
         run: |
-          # Use BuildKit certs mounted by Kubernetes runner
           docker buildx create \
             --name remote-buildkit \
             --driver remote \
