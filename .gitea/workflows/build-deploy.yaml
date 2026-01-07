@@ -70,6 +70,7 @@ jobs:
 
       - name: Login to Harbor Registry
         run: |
+          echo "Logging in as: ${{ secrets.HARBOR_USERNAME }}"
           echo "${{ secrets.HARBOR_PASSWORD }}" | docker login ${{ env.REGISTRY }} -u "${{ secrets.HARBOR_USERNAME }}" --password-stdin
 
       - name: Generate image tags
