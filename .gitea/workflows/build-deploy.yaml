@@ -16,17 +16,19 @@ on:
 env:
   REGISTRY: harbor.g-eye.io
   IMAGE_NAME: elgato/elgato-photo
-  BUILDKIT_HOST: tcp://buildkit.dev.svc.cluster.local:1234
 
 jobs:
   lint-and-test:
     name: Lint & Test
     runs-on: ubuntu-latest
-    container:
-      image: node:20-bookworm
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
       - name: Install dependencies
         run: npm ci
@@ -46,31 +48,45 @@ jobs:
     runs-on: ubuntu-latest
     if: gitea.event_name == 'push' && gitea.ref == 'refs/heads/main'
 
+    env:
+      DOCKER_HOST: tcp://localhost:2376
+      DOCKER_TLS_VERIFY: "1"
+      DOCKER_CERT_PATH: /certs/client
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Docker buildx with remote BuildKit
+      - name: Install Docker CLI
         run: |
-          # Install buildx plugin
-          mkdir -p ~/.docker/cli-plugins
-          wget -q -O ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/v0.14.0/buildx-v0.14.0.linux-amd64
-          chmod +x ~/.docker/cli-plugins/docker-buildx
+          apt-get update
+          apt-get install -y ca-certificates curl
+          install -m 0755 -d /etc/apt/keyrings
+          curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+          chmod a+r /etc/apt/keyrings/docker.asc
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian bookworm stable" > /etc/apt/sources.list.d/docker.list
+          apt-get update
+          apt-get install -y docker-ce-cli
 
-          # Create builder with remote BuildKit (certs mounted by runner)
-          docker buildx create \
-            --name remote-buildkit \
-            --driver remote \
-            --driver-opt cacert=/buildkit-certs/ca.pem,cert=/buildkit-certs/cert.pem,key=/buildkit-certs/key.pem \
-            ${{ env.BUILDKIT_HOST }}
-          docker buildx use remote-buildkit
-          docker buildx inspect --bootstrap
+      - name: Wait for Docker
+        run: |
+          for i in $(seq 1 30); do
+            if docker info > /dev/null 2>&1; then
+              echo "Docker is ready"
+              exit 0
+            fi
+            echo "Waiting for Docker... ($i/30)"
+            sleep 2
+          done
+          echo "Docker not available"
+          exit 1
 
       - name: Login to Harbor Registry
         env:
           HARBOR_USER: ${{ secrets.HARBOR_USERNAME }}
           HARBOR_PASS: ${{ secrets.HARBOR_PASSWORD }}
         run: |
+          echo "Logging in as: ${HARBOR_USER}"
           echo "${HARBOR_PASS}" | docker login ${{ env.REGISTRY }} -u "${HARBOR_USER}" --password-stdin
 
       - name: Generate image tags
@@ -83,19 +99,20 @@ jobs:
 
       - name: Build and push
         run: |
-          docker buildx build \
-            --platform linux/amd64,linux/arm64 \
-            --push \
+          docker build \
             --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest \
             --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tags.outputs.sha_tag }} \
             --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tags.outputs.timestamp_tag }} \
             --build-arg APP_VERSION=${{ gitea.sha }} \
             .
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tags.outputs.sha_tag }}
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tags.outputs.timestamp_tag }}
 
       - name: Summary
         run: |
-          echo "=== Docker Image Built with Remote BuildKit ==="
+          echo "=== Docker Image Built ==="
           echo "Registry: ${{ env.REGISTRY }}"
           echo "Image: ${{ env.IMAGE_NAME }}"
           echo "Tags: latest, ${{ steps.tags.outputs.sha_tag }}, ${{ steps.tags.outputs.timestamp_tag }}"
-          echo "Platforms: linux/amd64, linux/arm64"
+          echo "Flux CD will automatically sync the new image."
