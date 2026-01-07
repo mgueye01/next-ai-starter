@@ -47,34 +47,13 @@ jobs:
     needs: lint-and-test
     runs-on: ubuntu-latest
     if: gitea.event_name == 'push' && gitea.ref == 'refs/heads/main'
+    container:
+      image: gcr.io/kaniko-project/executor:debug
+      options: --entrypoint ""
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Install Docker CLI
-        run: |
-          apt-get update
-          apt-get install -y ca-certificates curl
-          install -m 0755 -d /etc/apt/keyrings
-          curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
-          chmod a+r /etc/apt/keyrings/docker.asc
-          echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian bookworm stable" > /etc/apt/sources.list.d/docker.list
-          apt-get update
-          apt-get install -y docker-ce-cli docker-buildx-plugin
-
-      - name: Configure Docker for DinD
-        run: |
-          mkdir -p ~/.docker
-          echo '{"experimental": "enabled"}' > ~/.docker/config.json
-
-      - name: Login to Harbor Registry
-        env:
-          HARBOR_USER: ${{ secrets.HARBOR_USERNAME }}
-          HARBOR_PASS: ${{ secrets.HARBOR_PASSWORD }}
-        run: |
-          echo "Logging in as: ${HARBOR_USER}"
-          echo "${HARBOR_PASS}" | docker login ${{ env.REGISTRY }} -u "${HARBOR_USER}" --password-stdin
 
       - name: Generate image tags
         id: tags
@@ -84,22 +63,37 @@ jobs:
           echo "sha_tag=${SHORT_SHA}" >> $GITHUB_OUTPUT
           echo "timestamp_tag=${TIMESTAMP}" >> $GITHUB_OUTPUT
 
-      - name: Build and push
+      - name: Setup Kaniko auth
+        env:
+          HARBOR_USER: ${{ secrets.HARBOR_USERNAME }}
+          HARBOR_PASS: ${{ secrets.HARBOR_PASSWORD }}
         run: |
-          docker buildx create --use --name mybuilder --driver docker-container
-          docker buildx build \
-            --platform linux/amd64,linux/arm64 \
-            --push \
-            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest \
-            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tags.outputs.sha_tag }} \
-            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tags.outputs.timestamp_tag }} \
-            --build-arg APP_VERSION=${{ gitea.sha }} \
-            .
+          mkdir -p /kaniko/.docker
+          AUTH=$(echo -n "${HARBOR_USER}:${HARBOR_PASS}" | base64)
+          cat > /kaniko/.docker/config.json << EOF
+          {
+            "auths": {
+              "${{ env.REGISTRY }}": {
+                "auth": "${AUTH}"
+              }
+            }
+          }
+          EOF
+
+      - name: Build and push with Kaniko
+        run: |
+          /kaniko/executor \
+            --context "${GITHUB_WORKSPACE}" \
+            --dockerfile "${GITHUB_WORKSPACE}/Dockerfile" \
+            --destination "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest" \
+            --destination "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tags.outputs.sha_tag }}" \
+            --destination "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tags.outputs.timestamp_tag }}" \
+            --build-arg "APP_VERSION=${{ gitea.sha }}" \
+            --cache=true
 
       - name: Summary
         run: |
-          echo "=== Docker Image Built ==="
+          echo "=== Docker Image Built with Kaniko ==="
           echo "Registry: ${{ env.REGISTRY }}"
           echo "Image: ${{ env.IMAGE_NAME }}"
           echo "Tags: latest, ${{ steps.tags.outputs.sha_tag }}, ${{ steps.tags.outputs.timestamp_tag }}"
-          echo "Flux CD will automatically sync the new image."
