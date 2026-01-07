@@ -47,13 +47,15 @@ jobs:
     if: gitea.event_name == 'push' && gitea.ref == 'refs/heads/main'
     container:
       image: docker:27-cli
-      options: --network host
+      options: --network=host
       volumes:
         - /buildkit-certs:/buildkit-certs:ro
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        run: |
+          git clone --depth 1 --branch main ${{ gitea.server_url }}/${{ gitea.repository }}.git .
+          git checkout ${{ gitea.sha }}
 
       - name: Install buildx
         run: |
