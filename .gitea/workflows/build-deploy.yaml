@@ -53,8 +53,11 @@ jobs:
 
     steps:
       - name: Checkout
+        env:
+          GITEA_TOKEN: ${{ github.token }}
         run: |
-          git clone --depth 1 --branch main ${{ gitea.server_url }}/${{ gitea.repository }}.git .
+          git clone --depth 1 https://oauth2:${GITEA_TOKEN}@gitea.g-eye.io/${{ gitea.repository }}.git .
+          git fetch origin ${{ gitea.sha }} --depth 1
           git checkout ${{ gitea.sha }}
 
       - name: Install buildx
