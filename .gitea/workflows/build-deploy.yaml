@@ -61,7 +61,7 @@ jobs:
 
       - name: Clone repository
         run: |
-          git clone --depth 1 --branch main ${{ gitea.server_url }}/${{ gitea.repository }}.git .
+          git clone --depth 1 --branch main https://gitea.g-eye.io/${{ gitea.repository }}.git .
           git checkout ${{ gitea.sha }}
 
       - name: Wait for Docker
