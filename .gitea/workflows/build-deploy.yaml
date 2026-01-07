@@ -16,6 +16,8 @@ on:
 env:
   REGISTRY: harbor.g-eye.io
   IMAGE_NAME: elgato/elgato-photo
+  # BuildKit service endpoint (in-cluster)
+  BUILDKIT_HOST: tcp://buildkit.dev.svc.cluster.local:1234
 
 jobs:
   lint-and-test:
@@ -43,7 +45,7 @@ jobs:
         run: npx prisma generate
 
   build-and-push:
-    name: Build & Push Docker
+    name: Build & Push Image
     needs: lint-and-test
     runs-on: ubuntu-latest
     if: gitea.event_name == 'push' && gitea.ref == 'refs/heads/main'
@@ -54,41 +56,28 @@ jobs:
           git clone --depth 1 --branch main https://oauth2:${{ secrets.GITHUB_TOKEN }}@gitea.g-eye.io/${{ gitea.repository }}.git .
           git checkout ${{ gitea.sha }}
 
-      - name: Debug Docker environment
+      - name: Install buildctl
         run: |
-          echo "=== Environment ==="
-          env | grep -i docker || echo "No DOCKER vars"
-          echo ""
-          echo "=== Check socket ==="
-          ls -la /var/run/docker.sock 2>/dev/null || echo "No socket at /var/run/docker.sock"
-          echo ""
-          echo "=== Check common paths ==="
-          which docker || echo "docker not in PATH"
-          echo ""
-          echo "=== Try docker info ==="
-          docker info 2>&1 || echo "docker info failed"
+          # Download BuildKit release
+          BUILDKIT_VERSION="v0.26.3"
+          wget -q "https://github.com/moby/buildkit/releases/download/${BUILDKIT_VERSION}/buildkit-${BUILDKIT_VERSION}.linux-amd64.tar.gz"
+          tar -xzf "buildkit-${BUILDKIT_VERSION}.linux-amd64.tar.gz"
+          mv bin/buildctl /usr/local/bin/
+          rm -rf bin "buildkit-${BUILDKIT_VERSION}.linux-amd64.tar.gz"
+          buildctl --version
 
-      - name: Wait for Docker
+      - name: Verify BuildKit connection
         run: |
-          for i in $(seq 1 30); do
-            if docker info > /dev/null 2>&1; then
-              echo "Docker is ready"
-              docker version
-              exit 0
-            fi
-            echo "Waiting for Docker... ($i/30)"
-            sleep 2
-          done
-          echo "Docker not available"
-          exit 1
-
-      - name: Login to Harbor Registry
-        env:
-          HARBOR_USER: ${{ secrets.HARBOR_USERNAME }}
-          HARBOR_PASS: ${{ secrets.HARBOR_PASSWORD }}
-        run: |
-          echo "Logging in as: ${HARBOR_USER}"
-          echo "${HARBOR_PASS}" | docker login ${{ env.REGISTRY }} -u "${HARBOR_USER}" --password-stdin
+          echo "=== BuildKit client certificates ==="
+          ls -la /buildkit-certs/ || echo "No certs at /buildkit-certs"
+          echo ""
+          echo "=== Testing BuildKit connection ==="
+          buildctl \
+            --addr "${{ env.BUILDKIT_HOST }}" \
+            --tlscacert /buildkit-certs/ca.pem \
+            --tlscert /buildkit-certs/cert.pem \
+            --tlskey /buildkit-certs/key.pem \
+            debug info
 
       - name: Generate image tags
         id: tags
@@ -98,21 +87,46 @@ jobs:
           echo "sha_tag=${SHORT_SHA}" >> $GITHUB_OUTPUT
           echo "timestamp_tag=${TIMESTAMP}" >> $GITHUB_OUTPUT
 
-      - name: Build and push
+      - name: Build and push with BuildKit
+        env:
+          HARBOR_USER: ${{ secrets.HARBOR_USERNAME }}
+          HARBOR_PASS: ${{ secrets.HARBOR_PASSWORD }}
         run: |
-          docker build \
-            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest \
-            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tags.outputs.sha_tag }} \
-            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tags.outputs.timestamp_tag }} \
-            --build-arg APP_VERSION=${{ gitea.sha }} \
-            .
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tags.outputs.sha_tag }}
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tags.outputs.timestamp_tag }}
+          # Create Docker config for registry auth
+          mkdir -p ~/.docker
+          AUTH=$(echo -n "${HARBOR_USER}:${HARBOR_PASS}" | base64)
+          cat > ~/.docker/config.json << EOF
+          {
+            "auths": {
+              "${{ env.REGISTRY }}": {
+                "auth": "${AUTH}"
+              }
+            }
+          }
+          EOF
+
+          # Build and push using buildctl
+          # Uses Dockerfile frontend and pushes directly to registry
+          buildctl \
+            --addr "${{ env.BUILDKIT_HOST }}" \
+            --tlscacert /buildkit-certs/ca.pem \
+            --tlscert /buildkit-certs/cert.pem \
+            --tlskey /buildkit-certs/key.pem \
+            build \
+            --frontend dockerfile.v0 \
+            --local context=. \
+            --local dockerfile=. \
+            --opt build-arg:APP_VERSION=${{ gitea.sha }} \
+            --output type=image,\"name=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest,${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tags.outputs.sha_tag }},${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tags.outputs.timestamp_tag }}\",push=true
 
       - name: Summary
         run: |
-          echo "=== Docker Image Built ==="
+          echo "=== Image Built and Pushed ==="
           echo "Registry: ${{ env.REGISTRY }}"
           echo "Image: ${{ env.IMAGE_NAME }}"
-          echo "Tags: latest, ${{ steps.tags.outputs.sha_tag }}, ${{ steps.tags.outputs.timestamp_tag }}"
+          echo "Tags:"
+          echo "  - latest"
+          echo "  - ${{ steps.tags.outputs.sha_tag }}"
+          echo "  - ${{ steps.tags.outputs.timestamp_tag }}"
+          echo ""
+          echo "Built with BuildKit at: ${{ env.BUILDKIT_HOST }}"
