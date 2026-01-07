@@ -47,25 +47,26 @@ jobs:
     needs: lint-and-test
     runs-on: ubuntu-latest
     if: gitea.event_name == 'push' && gitea.ref == 'refs/heads/main'
-    services:
-      dind:
-        image: docker:27-dind
-        options: --privileged
-        env:
-          DOCKER_TLS_CERTDIR: ""
-    container:
-      image: docker:27-cli
-      env:
-        DOCKER_HOST: tcp://dind:2375
 
     steps:
-      - name: Install git
-        run: apk add --no-cache git
-
       - name: Clone repository
         run: |
           git clone --depth 1 --branch main https://oauth2:${{ secrets.GITHUB_TOKEN }}@gitea.g-eye.io/${{ gitea.repository }}.git .
           git checkout ${{ gitea.sha }}
+
+      - name: Debug Docker environment
+        run: |
+          echo "=== Environment ==="
+          env | grep -i docker || echo "No DOCKER vars"
+          echo ""
+          echo "=== Check socket ==="
+          ls -la /var/run/docker.sock 2>/dev/null || echo "No socket at /var/run/docker.sock"
+          echo ""
+          echo "=== Check common paths ==="
+          which docker || echo "docker not in PATH"
+          echo ""
+          echo "=== Try docker info ==="
+          docker info 2>&1 || echo "docker info failed"
 
       - name: Wait for Docker
         run: |
