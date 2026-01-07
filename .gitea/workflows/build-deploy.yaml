@@ -47,9 +47,6 @@ jobs:
     needs: lint-and-test
     runs-on: ubuntu-latest
     if: gitea.event_name == 'push' && gitea.ref == 'refs/heads/main'
-    container:
-      image: gcr.io/kaniko-project/executor:debug
-      options: --entrypoint ""
 
     steps:
       - name: Checkout
@@ -63,17 +60,20 @@ jobs:
           echo "sha_tag=${SHORT_SHA}" >> $GITHUB_OUTPUT
           echo "timestamp_tag=${TIMESTAMP}" >> $GITHUB_OUTPUT
 
-      - name: Setup Kaniko credentials
+      - name: Build and push with Kaniko
         env:
           HARBOR_USER: ${{ secrets.HARBOR_USERNAME }}
           HARBOR_PASS: ${{ secrets.HARBOR_PASSWORD }}
         run: |
+          # Create Docker config for Kaniko
           mkdir -p /kaniko/.docker
           echo "{\"auths\":{\"${{ env.REGISTRY }}\":{\"username\":\"${HARBOR_USER}\",\"password\":\"${HARBOR_PASS}\"}}}" > /kaniko/.docker/config.json
 
-      - name: Build and push with Kaniko
-        run: |
-          /kaniko/executor \
+          # Download and run Kaniko
+          wget -q https://github.com/GoogleContainerTools/kaniko/releases/download/v1.23.2/executor-v1.23.2-linux-amd64.tar.gz -O /tmp/kaniko.tar.gz
+          tar -xzf /tmp/kaniko.tar.gz -C /tmp
+
+          /tmp/executor \
             --context "${GITHUB_WORKSPACE}" \
             --dockerfile "${GITHUB_WORKSPACE}/Dockerfile" \
             --destination "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest" \
