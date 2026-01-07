@@ -69,9 +69,12 @@ jobs:
           echo '{"experimental": "enabled"}' > ~/.docker/config.json
 
       - name: Login to Harbor Registry
+        env:
+          HARBOR_USER: ${{ secrets.HARBOR_USERNAME }}
+          HARBOR_PASS: ${{ secrets.HARBOR_PASSWORD }}
         run: |
-          echo "Logging in as: ${{ secrets.HARBOR_USERNAME }}"
-          echo "${{ secrets.HARBOR_PASSWORD }}" | docker login ${{ env.REGISTRY }} -u "${{ secrets.HARBOR_USERNAME }}" --password-stdin
+          echo "Logging in as: ${HARBOR_USER}"
+          echo "${HARBOR_PASS}" | docker login ${{ env.REGISTRY }} -u "${HARBOR_USER}" --password-stdin
 
       - name: Generate image tags
         id: tags
