@@ -77,7 +77,6 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.10.2",
     "@chromatic-com/storybook": "^3.2.4",
-    "@eslint/eslintrc": "^3.3.3",
     "@playwright/test": "^1.55.0",
     "@storybook/addon-essentials": "^8.5.3",
     "@storybook/addon-interactions": "^8.5.3",
@@ -95,8 +94,8 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "axe-playwright": "^2.2.1",
-    "eslint": "^9.39.2",
-    "eslint-config-next": "^16.1.1",
+    "eslint": "^8.57.1",
+    "eslint-config-next": "^14.2.35",
     "playwright-core": "^1.55.0",
     "playwright-lighthouse": "^4.0.0",
     "postcss": "^8",
