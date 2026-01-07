@@ -47,6 +47,9 @@ jobs:
     if: gitea.event_name == 'push' && gitea.ref == 'refs/heads/main'
     container:
       image: docker:27-cli
+      options: --network host
+      volumes:
+        - /buildkit-certs:/buildkit-certs:ro
 
     steps:
       - name: Checkout
