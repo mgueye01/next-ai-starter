@@ -47,10 +47,39 @@ jobs:
     needs: lint-and-test
     runs-on: ubuntu-latest
     if: gitea.event_name == 'push' && gitea.ref == 'refs/heads/main'
+    container:
+      image: docker:27-cli
+      options: >-
+        -v /certs/client:/certs/client:ro
+        -e DOCKER_HOST=tcp://localhost:2376
+        -e DOCKER_TLS_VERIFY=1
+        -e DOCKER_CERT_PATH=/certs/client
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Wait for Docker
+        run: |
+          for i in $(seq 1 30); do
+            if docker info > /dev/null 2>&1; then
+              echo "Docker is ready"
+              docker version
+              exit 0
+            fi
+            echo "Waiting for Docker... ($i/30)"
+            sleep 2
+          done
+          echo "Docker not available"
+          exit 1
+
+      - name: Login to Harbor Registry
+        env:
+          HARBOR_USER: ${{ secrets.HARBOR_USERNAME }}
+          HARBOR_PASS: ${{ secrets.HARBOR_PASSWORD }}
+        run: |
+          echo "Logging in as: ${HARBOR_USER}"
+          echo "${HARBOR_PASS}" | docker login ${{ env.REGISTRY }} -u "${HARBOR_USER}" --password-stdin
 
       - name: Generate image tags
         id: tags
@@ -60,33 +89,21 @@ jobs:
           echo "sha_tag=${SHORT_SHA}" >> $GITHUB_OUTPUT
           echo "timestamp_tag=${TIMESTAMP}" >> $GITHUB_OUTPUT
 
-      - name: Build and push with Kaniko
-        env:
-          HARBOR_USER: ${{ secrets.HARBOR_USERNAME }}
-          HARBOR_PASS: ${{ secrets.HARBOR_PASSWORD }}
+      - name: Build and push
         run: |
-          # Create Docker config for Kaniko
-          mkdir -p /kaniko/.docker
-          echo "{\"auths\":{\"${{ env.REGISTRY }}\":{\"username\":\"${HARBOR_USER}\",\"password\":\"${HARBOR_PASS}\"}}}" > /kaniko/.docker/config.json
-
-          # Download and run Kaniko
-          wget -q https://github.com/GoogleContainerTools/kaniko/releases/download/v1.23.2/executor-v1.23.2-linux-amd64.tar.gz -O /tmp/kaniko.tar.gz
-          tar -xzf /tmp/kaniko.tar.gz -C /tmp
-
-          /tmp/executor \
-            --context "${GITHUB_WORKSPACE}" \
-            --dockerfile "${GITHUB_WORKSPACE}/Dockerfile" \
-            --destination "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest" \
-            --destination "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tags.outputs.sha_tag }}" \
-            --destination "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tags.outputs.timestamp_tag }}" \
-            --build-arg "APP_VERSION=${{ gitea.sha }}" \
-            --cache=true \
-            --cache-repo "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/cache"
+          docker build \
+            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest \
+            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tags.outputs.sha_tag }} \
+            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tags.outputs.timestamp_tag }} \
+            --build-arg APP_VERSION=${{ gitea.sha }} \
+            .
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tags.outputs.sha_tag }}
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tags.outputs.timestamp_tag }}
 
       - name: Summary
         run: |
-          echo "=== Docker Image Built with Kaniko ==="
+          echo "=== Docker Image Built ==="
           echo "Registry: ${{ env.REGISTRY }}"
           echo "Image: ${{ env.IMAGE_NAME }}"
           echo "Tags: latest, ${{ steps.tags.outputs.sha_tag }}, ${{ steps.tags.outputs.timestamp_tag }}"
-          echo "Flux CD will automatically sync the new image."
