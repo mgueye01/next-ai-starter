@@ -16,6 +16,7 @@ on:
 env:
   REGISTRY: harbor.g-eye.io
   IMAGE_NAME: elgato/elgato-photo
+  BUILDKIT_HOST: tcp://buildkit.dev.svc.cluster.local:1234
 
 jobs:
   lint-and-test:
@@ -47,13 +48,49 @@ jobs:
     needs: lint-and-test
     runs-on: ubuntu-latest
     if: gitea.event_name == 'push' && gitea.ref == 'refs/heads/main'
-    container:
-      image: gcr.io/kaniko-project/executor:debug
-      options: --entrypoint ""
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Install Docker CLI
+        run: |
+          apt-get update
+          apt-get install -y ca-certificates curl
+          install -m 0755 -d /etc/apt/keyrings
+          curl -fsSL https://download.docker.com/linux/debian/gpg -o /etc/apt/keyrings/docker.asc
+          chmod a+r /etc/apt/keyrings/docker.asc
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/debian bookworm stable" > /etc/apt/sources.list.d/docker.list
+          apt-get update
+          apt-get install -y docker-ce-cli docker-buildx-plugin
+
+      - name: Setup BuildKit certs
+        env:
+          BUILDKIT_CA: ${{ secrets.BUILDKIT_CA }}
+          BUILDKIT_CERT: ${{ secrets.BUILDKIT_CERT }}
+          BUILDKIT_KEY: ${{ secrets.BUILDKIT_KEY }}
+        run: |
+          mkdir -p ~/.buildkit
+          echo "${BUILDKIT_CA}" > ~/.buildkit/ca.pem
+          echo "${BUILDKIT_CERT}" > ~/.buildkit/cert.pem
+          echo "${BUILDKIT_KEY}" > ~/.buildkit/key.pem
+          chmod 600 ~/.buildkit/*.pem
+
+      - name: Create buildx builder
+        run: |
+          docker buildx create \
+            --name remote-buildkit \
+            --driver remote \
+            --driver-opt cacert=${HOME}/.buildkit/ca.pem,cert=${HOME}/.buildkit/cert.pem,key=${HOME}/.buildkit/key.pem \
+            ${{ env.BUILDKIT_HOST }}
+          docker buildx use remote-buildkit
+
+      - name: Login to Harbor Registry
+        env:
+          HARBOR_USER: ${{ secrets.HARBOR_USERNAME }}
+          HARBOR_PASS: ${{ secrets.HARBOR_PASSWORD }}
+        run: |
+          echo "${HARBOR_PASS}" | docker login ${{ env.REGISTRY }} -u "${HARBOR_USER}" --password-stdin
 
       - name: Generate image tags
         id: tags
@@ -63,37 +100,21 @@ jobs:
           echo "sha_tag=${SHORT_SHA}" >> $GITHUB_OUTPUT
           echo "timestamp_tag=${TIMESTAMP}" >> $GITHUB_OUTPUT
 
-      - name: Setup Kaniko auth
-        env:
-          HARBOR_USER: ${{ secrets.HARBOR_USERNAME }}
-          HARBOR_PASS: ${{ secrets.HARBOR_PASSWORD }}
+      - name: Build and push
         run: |
-          mkdir -p /kaniko/.docker
-          AUTH=$(echo -n "${HARBOR_USER}:${HARBOR_PASS}" | base64)
-          cat > /kaniko/.docker/config.json << EOF
-          {
-            "auths": {
-              "${{ env.REGISTRY }}": {
-                "auth": "${AUTH}"
-              }
-            }
-          }
-          EOF
-
-      - name: Build and push with Kaniko
-        run: |
-          /kaniko/executor \
-            --context "${GITHUB_WORKSPACE}" \
-            --dockerfile "${GITHUB_WORKSPACE}/Dockerfile" \
-            --destination "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest" \
-            --destination "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tags.outputs.sha_tag }}" \
-            --destination "${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tags.outputs.timestamp_tag }}" \
-            --build-arg "APP_VERSION=${{ gitea.sha }}" \
-            --cache=true
+          docker buildx build \
+            --platform linux/amd64,linux/arm64 \
+            --push \
+            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest \
+            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tags.outputs.sha_tag }} \
+            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.tags.outputs.timestamp_tag }} \
+            --build-arg APP_VERSION=${{ gitea.sha }} \
+            .
 
       - name: Summary
         run: |
-          echo "=== Docker Image Built with Kaniko ==="
+          echo "=== Docker Image Built with Remote BuildKit ==="
           echo "Registry: ${{ env.REGISTRY }}"
           echo "Image: ${{ env.IMAGE_NAME }}"
           echo "Tags: latest, ${{ steps.tags.outputs.sha_tag }}, ${{ steps.tags.outputs.timestamp_tag }}"
+          echo "Platforms: linux/amd64, linux/arm64"
