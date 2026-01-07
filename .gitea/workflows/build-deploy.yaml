@@ -48,21 +48,15 @@ jobs:
     runs-on: ubuntu-latest
     if: gitea.event_name == 'push' && gitea.ref == 'refs/heads/main'
     services:
-      docker:
+      dind:
         image: docker:27-dind
         options: --privileged
         env:
-          DOCKER_TLS_CERTDIR: /certs
-        volumes:
-          - /certs/client:/certs/client
+          DOCKER_TLS_CERTDIR: ""
     container:
       image: docker:27-cli
-      options: >-
-        -e DOCKER_HOST=tcp://docker:2376
-        -e DOCKER_TLS_VERIFY=1
-        -e DOCKER_CERT_PATH=/certs/client
-      volumes:
-        - /certs/client:/certs/client:ro
+      env:
+        DOCKER_HOST: tcp://dind:2375
 
     steps:
       - name: Install git
