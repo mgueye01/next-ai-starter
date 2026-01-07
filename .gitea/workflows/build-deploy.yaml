@@ -15,7 +15,7 @@ on:
 
 env:
   REGISTRY: harbor.g-eye.io
-  IMAGE_NAME: library/elgato-photo
+  IMAGE_NAME: elgato/elgato-photo
 
 jobs:
   lint-and-test:
