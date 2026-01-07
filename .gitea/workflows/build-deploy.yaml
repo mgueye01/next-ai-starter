@@ -64,26 +64,16 @@ jobs:
           apt-get update
           apt-get install -y docker-ce-cli docker-buildx-plugin
 
-      - name: Setup BuildKit certs
-        env:
-          BUILDKIT_CA: ${{ secrets.BUILDKIT_CA }}
-          BUILDKIT_CERT: ${{ secrets.BUILDKIT_CERT }}
-          BUILDKIT_KEY: ${{ secrets.BUILDKIT_KEY }}
+      - name: Create buildx builder with remote BuildKit
         run: |
-          mkdir -p ~/.buildkit
-          echo "${BUILDKIT_CA}" > ~/.buildkit/ca.pem
-          echo "${BUILDKIT_CERT}" > ~/.buildkit/cert.pem
-          echo "${BUILDKIT_KEY}" > ~/.buildkit/key.pem
-          chmod 600 ~/.buildkit/*.pem
-
-      - name: Create buildx builder
-        run: |
+          # Use BuildKit certs mounted by Kubernetes runner
           docker buildx create \
             --name remote-buildkit \
             --driver remote \
-            --driver-opt cacert=${HOME}/.buildkit/ca.pem,cert=${HOME}/.buildkit/cert.pem,key=${HOME}/.buildkit/key.pem \
+            --driver-opt cacert=/buildkit-certs/ca.pem,cert=/buildkit-certs/cert.pem,key=/buildkit-certs/key.pem \
             ${{ env.BUILDKIT_HOST }}
           docker buildx use remote-buildkit
+          docker buildx inspect --bootstrap
 
       - name: Login to Harbor Registry
         env:
