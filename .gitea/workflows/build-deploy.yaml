@@ -56,8 +56,13 @@ jobs:
         -e DOCKER_CERT_PATH=/certs/client
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Install git
+        run: apk add --no-cache git
+
+      - name: Clone repository
+        run: |
+          git clone --depth 1 --branch main ${{ gitea.server_url }}/${{ gitea.repository }}.git .
+          git checkout ${{ gitea.sha }}
 
       - name: Wait for Docker
         run: |
