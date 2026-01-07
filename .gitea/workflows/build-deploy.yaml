@@ -45,29 +45,19 @@ jobs:
     needs: lint-and-test
     runs-on: ubuntu-latest
     if: gitea.event_name == 'push' && gitea.ref == 'refs/heads/main'
-    container:
-      image: docker:27-cli
-      options: --network=host
-      volumes:
-        - /buildkit-certs:/buildkit-certs:ro
 
     steps:
       - name: Checkout
-        env:
-          GITEA_TOKEN: ${{ github.token }}
-        run: |
-          git clone --depth 1 https://oauth2:${GITEA_TOKEN}@gitea.g-eye.io/${{ gitea.repository }}.git .
-          git fetch origin ${{ gitea.sha }} --depth 1
-          git checkout ${{ gitea.sha }}
+        uses: actions/checkout@v4
 
-      - name: Install buildx
+      - name: Setup Docker buildx with remote BuildKit
         run: |
+          # Install buildx plugin
           mkdir -p ~/.docker/cli-plugins
-          wget -O ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/v0.14.0/buildx-v0.14.0.linux-amd64
+          wget -q -O ~/.docker/cli-plugins/docker-buildx https://github.com/docker/buildx/releases/download/v0.14.0/buildx-v0.14.0.linux-amd64
           chmod +x ~/.docker/cli-plugins/docker-buildx
 
-      - name: Create buildx builder with remote BuildKit
-        run: |
+          # Create builder with remote BuildKit (certs mounted by runner)
           docker buildx create \
             --name remote-buildkit \
             --driver remote \
