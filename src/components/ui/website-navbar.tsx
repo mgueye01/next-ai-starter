@@ -39,9 +39,11 @@ export function WebsiteNavbar({ className }: { className?: string }) {
     { label: "À propos", ariaLabel: "En savoir plus sur le photographe", link: "/a-propos" },
     { label: "Contact", ariaLabel: "Contacter elGato Photo", link: "/contact" },
     ...(session ? [
-      { label: "Mon compte", ariaLabel: "Voir votre profil", link: "/profile" },
+      { label: "Administration", ariaLabel: "Accéder au panneau admin", link: "/admin" },
       { label: "Déconnexion", ariaLabel: "Se déconnecter", link: "/auth/signout" }
-    ] : [])
+    ] : [
+      { label: "Espace Client", ariaLabel: "Accéder à vos galeries", link: "/client/login" }
+    ])
   ];
 
   const socialItems: StaggeredMenuSocialItem[] = [
@@ -53,8 +55,8 @@ export function WebsiteNavbar({ className }: { className?: string }) {
   const cardNavItems: CardNavItem[] = [
     {
       label: "Services",
-      bgColor: "rgba(187, 220, 229, 0.7)",
-      textColor: "#6B5B47",
+      bgColor: "rgba(187, 220, 229, 0.7)", // elgato-blue
+      textColor: "#6B5B47", // elgato-brown
       links: [
         { label: "Tous les services", href: "/services", ariaLabel: "Voir tous les services" },
         { label: "Portraits d'Art", href: "/services/portraits", ariaLabel: "Séances photo portraits" },
@@ -66,8 +68,8 @@ export function WebsiteNavbar({ className }: { className?: string }) {
     },
     {
       label: "Portfolio",
-      bgColor: "rgba(217, 196, 176, 0.8)",
-      textColor: "#6B5B47",
+      bgColor: "rgba(217, 196, 176, 0.8)", // elgato-sand-light
+      textColor: "#6B5B47", // elgato-brown
       links: [
         { label: "Galerie complète", href: "/portfolio", ariaLabel: "Voir tout le portfolio" },
         { label: "Mon processus", href: "/process", ariaLabel: "Découvrir mon processus créatif" }
@@ -75,14 +77,23 @@ export function WebsiteNavbar({ className }: { className?: string }) {
     },
     {
       label: "À Propos",
-      bgColor: "rgba(207, 171, 141, 0.9)",
-      textColor: "#6B5B47",
+      bgColor: "rgba(207, 171, 141, 0.9)", // elgato-sand
+      textColor: "#6B5B47", // elgato-brown
       links: [
         { label: "Mon histoire", href: "/a-propos", ariaLabel: "En savoir plus sur le photographe" },
-        { label: "Contact", href: "/contact", ariaLabel: "Contacter elGato Photo" },
-        ...(session ? [
-          { label: "Mon compte", href: "/profile", ariaLabel: "Voir votre profil" }
-        ] : [])
+        { label: "Contact", href: "/contact", ariaLabel: "Contacter elGato Photo" }
+      ]
+    },
+    {
+      label: session ? "Mon Compte" : "Connexion",
+      bgColor: "rgba(107, 91, 71, 0.9)", // elgato-brown
+      textColor: "#ECEEDF", // elgato-cream
+      links: session ? [
+        { label: "Administration", href: "/admin", ariaLabel: "Accéder au panneau admin" },
+        { label: "Déconnexion", href: "/auth/signout", ariaLabel: "Se déconnecter" }
+      ] : [
+        { label: "Espace Client", href: "/client/login", ariaLabel: "Accéder à vos galeries" },
+        { label: "Administration", href: "/auth/signin", ariaLabel: "Connexion administrateur" }
       ]
     }
   ];
@@ -112,11 +123,11 @@ export function WebsiteNavbar({ className }: { className?: string }) {
           logoAlt="elGato Photo - Photographe Paris"
           items={cardNavItems}
           baseColor="rgba(255, 255, 255, 0.25)"
-          menuColor="#6B5B47"
-          buttonBgColor="#BBDCE5"
-          buttonTextColor="#6B5B47"
+          menuColor="#6B5B47" // elgato-brown
+          buttonBgColor="#BBDCE5" // elgato-blue
+          buttonTextColor="#6B5B47" // elgato-brown
           ease="power3.out"
-          className="backdrop-blur-lg border border-[#D9C4B0]/20 shadow-lg"
+          className="backdrop-blur-lg border border-elgato-sand-light/20 shadow-lg"
         />
       </motion.div>
 
@@ -128,12 +139,12 @@ export function WebsiteNavbar({ className }: { className?: string }) {
           socialItems={socialItems}
           displaySocials={true}
           displayItemNumbering={true}
-          menuButtonColor="#6B5B47"
-          openMenuButtonColor="#6B5B47"
+          menuButtonColor="#6B5B47" // elgato-brown
+          openMenuButtonColor="#6B5B47" // elgato-brown
           changeMenuColorOnOpen={false}
-          colors={['#BBDCE5', '#CFAB8D']}
+          colors={['#BBDCE5', '#CFAB8D']} // elgato-blue, elgato-sand
           logoUrl="/elgato-logo.png"
-          accentColor="#BBDCE5"
+          accentColor="#BBDCE5" // elgato-blue
         />
       </div>
     </>

@@ -115,7 +115,7 @@ export default function MariagesPage() {
       </section>
 
       {/* Stats */}
-      <section className="py-12 bg-[#ECEEDF]/30">
+      <section className="py-12 bg-elgato-cream/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
@@ -125,10 +125,10 @@ export default function MariagesPage() {
               { number: "600+", label: "Photos livrées" }
             ].map((stat, index) => (
               <div key={index}>
-                <div className="text-4xl md:text-5xl font-light text-[#CFAB8D] mb-2">
+                <div className="text-4xl md:text-5xl font-light text-elgato-sand mb-2">
                   {stat.number}
                 </div>
-                <div className="text-[#8B7355]">{stat.label}</div>
+                <div className="text-elgato-text-light">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -139,11 +139,11 @@ export default function MariagesPage() {
       <section className="py-20 md:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-light text-[#6B5B47] mb-6">
+            <h2 className="text-4xl md:text-5xl font-light text-elgato-brown mb-6">
               Forfaits Mariage
             </h2>
             <div className="w-24 h-0.5 bg-gradient-to-r from-[#BBDCE5] to-[#CFAB8D] mx-auto mb-6" />
-            <p className="text-lg text-[#8B7355] max-w-2xl mx-auto">
+            <p className="text-lg text-elgato-text-light max-w-2xl mx-auto">
               Des formules complètes pour que vous profitiez pleinement de votre journée
               sans vous soucier de rien.
             </p>
@@ -155,8 +155,8 @@ export default function MariagesPage() {
                 key={index}
                 className={`relative bg-white rounded-2xl p-8 border-2 ${
                   pkg.popular
-                    ? 'border-[#CFAB8D] shadow-2xl scale-105'
-                    : 'border-[#ECEEDF] shadow-lg'
+                    ? 'border-elgato-sand shadow-2xl scale-105'
+                    : 'border-elgato-cream shadow-lg'
                 }`}
               >
                 {pkg.popular && (
@@ -166,16 +166,16 @@ export default function MariagesPage() {
                 )}
 
                 <div className="text-center mb-8">
-                  <h3 className="text-2xl font-medium text-[#6B5B47] mb-2">{pkg.name}</h3>
-                  <div className="text-5xl font-light text-[#CFAB8D] mb-2">{pkg.price}</div>
-                  <div className="text-sm text-[#8B7355]">{pkg.duration}</div>
+                  <h3 className="text-2xl font-medium text-elgato-brown mb-2">{pkg.name}</h3>
+                  <div className="text-5xl font-light text-elgato-sand mb-2">{pkg.price}</div>
+                  <div className="text-sm text-elgato-text-light">{pkg.duration}</div>
                 </div>
 
                 <ul className="space-y-3 mb-8">
                   {pkg.features.map((feature, idx) => (
                     <li key={idx} className="flex items-start gap-3">
-                      <Check className="w-5 h-5 text-[#CFAB8D] flex-shrink-0 mt-0.5" />
-                      <span className="text-sm text-[#6B5B47]">{feature}</span>
+                      <Check className="w-5 h-5 text-elgato-sand flex-shrink-0 mt-0.5" />
+                      <span className="text-sm text-elgato-brown">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -185,7 +185,7 @@ export default function MariagesPage() {
                   className={`block text-center py-4 rounded-xl font-medium transition-all duration-300 ${
                     pkg.popular
                       ? 'bg-gradient-to-r from-[#CFAB8D] to-[#B89B7F] text-white'
-                      : 'border-2 border-[#CFAB8D] text-[#CFAB8D] hover:bg-[#CFAB8D] hover:text-white'
+                      : 'border-2 border-elgato-sand text-elgato-sand hover:bg-elgato-sand hover:text-white'
                   }`}
                 >
                   Réserver
@@ -195,8 +195,8 @@ export default function MariagesPage() {
           </div>
 
           <div className="bg-gradient-to-r from-[#BBDCE5]/10 to-[#CFAB8D]/10 rounded-2xl p-8 text-center">
-            <p className="text-[#6B5B47] font-medium mb-2">Options supplémentaires disponibles</p>
-            <p className="text-[#8B7355]">
+            <p className="text-elgato-brown font-medium mb-2">Options supplémentaires disponibles</p>
+            <p className="text-elgato-text-light">
               Séance engagement, livre d'or photo, tirages d'art, drone (selon lieu),
               photographe supplémentaire, heures additionnelles
             </p>
@@ -205,10 +205,10 @@ export default function MariagesPage() {
       </section>
 
       {/* Process */}
-      <section className="py-20 bg-[#ECEEDF]/30">
+      <section className="py-20 bg-elgato-cream/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-light text-[#6B5B47] mb-6">
+            <h2 className="text-4xl font-light text-elgato-brown mb-6">
               Comment Ça Se Passe ?
             </h2>
             <div className="w-24 h-0.5 bg-gradient-to-r from-[#BBDCE5] to-[#CFAB8D] mx-auto" />
@@ -220,8 +220,8 @@ export default function MariagesPage() {
                 <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#BBDCE5] to-[#CFAB8D] flex items-center justify-center text-2xl font-light text-white mx-auto mb-4">
                   {item.step}
                 </div>
-                <h3 className="text-xl font-medium text-[#6B5B47] mb-2">{item.title}</h3>
-                <p className="text-sm text-[#8B7355]">{item.description}</p>
+                <h3 className="text-xl font-medium text-elgato-brown mb-2">{item.title}</h3>
+                <p className="text-sm text-elgato-text-light">{item.description}</p>
               </div>
             ))}
           </div>
@@ -231,10 +231,10 @@ export default function MariagesPage() {
       {/* CTA */}
       <section className="py-20 bg-white">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-light text-[#6B5B47] mb-6">
+          <h2 className="text-3xl md:text-4xl font-light text-elgato-brown mb-6">
             Réservez Votre Date Dès Maintenant
           </h2>
-          <p className="text-lg text-[#8B7355] mb-8">
+          <p className="text-lg text-elgato-text-light mb-8">
             Les dates se remplissent rapidement. Contactez-moi pour vérifier la disponibilité
             et recevoir votre devis personnalisé.
           </p>

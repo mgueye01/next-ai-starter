@@ -106,11 +106,11 @@ export default function APropos() {
           className="text-center mb-20"
           variants={itemVariants}
         >
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extralight text-[#6B5B47] mb-6 tracking-wide">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extralight text-elgato-brown mb-6 tracking-wide">
             À propos
           </h1>
           <div className='w-24 h-0.5 bg-gradient-to-r from-[#BBDCE5] to-[#CFAB8D] mx-auto mb-8'></div>
-          <p className="text-xl md:text-2xl text-[#8B7355] max-w-4xl mx-auto leading-relaxed">
+          <p className="text-xl md:text-2xl text-elgato-text-light max-w-4xl mx-auto leading-relaxed">
             Photographe d'art basé à Paris, je capture l'essence de chaque instant 
             avec un style unique mêlant élégance contemporaine et authenticité naturelle.
           </p>
@@ -123,29 +123,29 @@ export default function APropos() {
         >
           <div className="order-2 lg:order-1 space-y-8">
             <div>
-              <h2 className="text-3xl md:text-4xl font-light text-[#6B5B47] mb-4">
+              <h2 className="text-3xl md:text-4xl font-light text-elgato-brown mb-4">
                 Bonjour, je suis 
-                <span className="block text-4xl md:text-5xl font-extralight text-[#CFAB8D] mt-2">
+                <span className="block text-4xl md:text-5xl font-extralight text-elgato-sand mt-2">
                   Alexandre
                 </span>
               </h2>
-              <div className="flex items-center gap-2 text-[#8B7355] mb-6">
-                <MapPin className="w-5 h-5 text-[#BBDCE5]" />
+              <div className="flex items-center gap-2 text-elgato-text-light mb-6">
+                <MapPin className="w-5 h-5 text-elgato-blue" />
                 <span>Photographe professionnel • Paris & Île-de-France</span>
               </div>
             </div>
             
-            <div className="space-y-6 text-base md:text-lg text-[#8B7355] leading-relaxed">
+            <div className="space-y-6 text-base md:text-lg text-elgato-text-light leading-relaxed">
               <p>
                 Depuis plus de 8 ans, j'ai développé une passion profonde pour l'art photographique, 
                 me spécialisant dans la capture d'instants authentiques et d'émotions sincères. 
-                Mon approche artistique privilégie <span className="font-medium text-[#CFAB8D]">l'authenticité</span> 
-                et <span className="font-medium text-[#CFAB8D]">l'élégance naturelle</span>.
+                Mon approche artistique privilégie <span className="font-medium text-elgato-sand">l'authenticité</span> 
+                et <span className="font-medium text-elgato-sand">l'élégance naturelle</span>.
               </p>
               <p>
                 Formé aux Beaux-Arts et certifié par l'École Française de Photographie, 
                 je maîtrise parfaitement les techniques classiques et contemporaines. 
-                Chaque séance est pensée comme une <span className="font-medium text-[#CFAB8D]">œuvre d'art unique</span>, 
+                Chaque séance est pensée comme une <span className="font-medium text-elgato-sand">œuvre d'art unique</span>, 
                 adaptée à votre personnalité et vos aspirations.
               </p>
               <p>
@@ -157,7 +157,7 @@ export default function APropos() {
           </div>
           
           <div className="order-1 lg:order-2">
-            <div className="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border-4 border-[#ECEEDF]">
+            <div className="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-2xl border-4 border-elgato-cream">
               <Image
                 src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=750&fit=crop"
                 alt="Alexandre, photographe elGato Photo Paris"
@@ -166,8 +166,8 @@ export default function APropos() {
               />
               <div className="absolute bottom-4 left-4 right-4">
                 <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-4 text-center">
-                  <div className="text-[#6B5B47] font-semibold">Alexandre Moreau</div>
-                  <div className="text-sm text-[#8B7355]">Photographe d'Art • Paris</div>
+                  <div className="text-elgato-brown font-semibold">Alexandre Moreau</div>
+                  <div className="text-sm text-elgato-text-light">Photographe d'Art • Paris</div>
                 </div>
               </div>
             </div>
@@ -182,20 +182,20 @@ export default function APropos() {
           {stats.map((stat, index) => (
             <motion.div 
               key={index} 
-              className="text-center p-6 bg-[#ECEEDF] rounded-2xl hover:bg-[#D9C4B0] transition-all duration-300 group"
+              className="text-center p-6 bg-elgato-cream rounded-2xl hover:bg-elgato-sand-light transition-all duration-300 group"
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-[#BBDCE5] to-[#CFAB8D] text-[#6B5B47] rounded-2xl mb-4 group-hover:scale-110 transition-transform">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-[#BBDCE5] to-[#CFAB8D] text-elgato-brown rounded-2xl mb-4 group-hover:scale-110 transition-transform">
                 <stat.icon size={28} />
               </div>
-              <div className="text-2xl md:text-3xl font-light text-[#CFAB8D] mb-2">
+              <div className="text-2xl md:text-3xl font-light text-elgato-sand mb-2">
                 {stat.value}
               </div>
-              <div className="text-sm font-medium text-[#6B5B47] mb-1">
+              <div className="text-sm font-medium text-elgato-brown mb-1">
                 {stat.label}
               </div>
-              <div className="text-xs text-[#8B7355]">
+              <div className="text-xs text-elgato-text-light">
                 {stat.desc}
               </div>
             </motion.div>
@@ -207,23 +207,23 @@ export default function APropos() {
           className="mb-20"
           variants={itemVariants}
         >
-          <h2 className="text-3xl md:text-4xl font-light text-[#6B5B47] mb-12 text-center">
+          <h2 className="text-3xl md:text-4xl font-light text-elgato-brown mb-12 text-center">
             Mon Expertise
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {expertise.map((item, index) => (
               <motion.div 
                 key={index}
-                className="text-center p-8 bg-white rounded-3xl shadow-lg border border-[#ECEEDF] hover:border-[#CFAB8D] transition-all duration-300"
+                className="text-center p-8 bg-white rounded-3xl shadow-lg border border-elgato-cream hover:border-elgato-sand transition-all duration-300"
                 whileHover={{ y: -5 }}
               >
-                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-[#BBDCE5] to-[#CFAB8D] text-[#6B5B47] rounded-2xl mb-6">
+                <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-[#BBDCE5] to-[#CFAB8D] text-elgato-brown rounded-2xl mb-6">
                   <item.icon size={32} />
                 </div>
-                <h3 className="text-xl font-semibold text-[#6B5B47] mb-4">
+                <h3 className="text-xl font-semibold text-elgato-brown mb-4">
                   {item.title}
                 </h3>
-                <p className="text-[#8B7355] leading-relaxed">
+                <p className="text-elgato-text-light leading-relaxed">
                   {item.description}
                 </p>
               </motion.div>
@@ -233,19 +233,19 @@ export default function APropos() {
 
         {/* Philosophy */}
         <motion.div 
-          className="bg-gradient-to-r from-[#BBDCE5]/20 to-[#D9C4B0]/20 rounded-3xl p-8 md:p-12 mb-24 border border-[#CFAB8D]/20"
+          className="bg-gradient-to-r from-[#BBDCE5]/20 to-[#D9C4B0]/20 rounded-3xl p-8 md:p-12 mb-24 border border-elgato-sand/20"
           variants={itemVariants}
         >
           <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-3xl md:text-4xl font-light text-[#6B5B47] mb-8">
+            <h2 className="text-3xl md:text-4xl font-light text-elgato-brown mb-8">
               Ma Philosophie
             </h2>
-            <blockquote className="text-xl md:text-2xl font-light text-[#6B5B47] italic leading-relaxed mb-8">
+            <blockquote className="text-xl md:text-2xl font-light text-elgato-brown italic leading-relaxed mb-8">
               "La photographie, c'est l'art de capturer l'âme d'un instant et de la 
               préserver pour l'éternité. Chaque clic devient une promesse de mémoire, 
               chaque image une fenêtre sur l'émotion."
             </blockquote>
-            <p className="text-base md:text-lg text-[#8B7355] leading-relaxed">
+            <p className="text-base md:text-lg text-elgato-text-light leading-relaxed">
               Je crois profondément que chaque personne porte en elle une beauté unique, 
               une histoire singulière qui mérite d'être révélée. Mon rôle de photographe 
               est de créer un espace de confiance où votre authenticité peut s'exprimer 
@@ -256,7 +256,7 @@ export default function APropos() {
 
         {/* Services */}
         <motion.div className="mb-24" variants={itemVariants}>
-          <h2 className="text-3xl md:text-4xl font-light text-[#6B5B47] mb-12 text-center">
+          <h2 className="text-3xl md:text-4xl font-light text-elgato-brown mb-12 text-center">
             Mes Services
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -274,10 +274,10 @@ export default function APropos() {
                     className="object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#6B5B47]/80 via-transparent to-transparent" />
-                  <div className="absolute inset-0 bg-[#CFAB8D]/0 group-hover:bg-[#CFAB8D]/20 transition-all duration-300" />
+                  <div className="absolute inset-0 bg-[#CFAB8D]/0 group-hover:bg-elgato-sand/20 transition-all duration-300" />
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-                  <h3 className="text-lg font-semibold mb-2 group-hover:text-[#BBDCE5] transition-colors">
+                  <h3 className="text-lg font-semibold mb-2 group-hover:text-elgato-blue transition-colors">
                     {service.title}
                   </h3>
                   <p className="text-sm opacity-90 group-hover:opacity-100 transition-opacity">
@@ -305,7 +305,7 @@ export default function APropos() {
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link 
                 href="/contact"
-                className="inline-flex items-center justify-center px-8 py-4 bg-[#BBDCE5] text-[#6B5B47] rounded-xl font-medium hover:bg-[#A5C9D4] transition-all duration-300 shadow-lg hover:shadow-xl"
+                className="inline-flex items-center justify-center px-8 py-4 bg-elgato-blue text-elgato-brown rounded-xl font-medium border-2 border-transparent hover:bg-elgato-blue-dark transition-all duration-300 shadow-lg hover:shadow-xl"
               >
                 Me contacter
               </Link>
@@ -313,7 +313,7 @@ export default function APropos() {
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link 
                 href="/portfolio"
-                className="inline-flex items-center justify-center px-8 py-4 border-2 border-[#CFAB8D] text-[#CFAB8D] hover:text-white rounded-xl font-medium hover:bg-[#CFAB8D] transition-all duration-300"
+                className="inline-flex items-center justify-center px-8 py-4 border-2 border-elgato-sand text-elgato-sand hover:text-white rounded-xl font-medium hover:bg-elgato-sand transition-all duration-300"
               >
                 Découvrir mon portfolio
               </Link>

@@ -50,8 +50,8 @@ export default function AboutPreview() {
                     <Award className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <p className="text-sm text-[#8B7355]">Photographe certifié</p>
-                    <p className="text-lg font-medium text-[#6B5B47]">Depuis 2018</p>
+                    <p className="text-sm text-elgato-text-light">Photographe certifié</p>
+                    <p className="text-lg font-medium text-elgato-brown">Depuis 2018</p>
                   </div>
                 </div>
               </motion.div>
@@ -80,8 +80,8 @@ export default function AboutPreview() {
             </motion.div>
 
             {/* Decorative corner frame */}
-            <div className="absolute -top-4 -left-4 w-24 h-24 border-t-4 border-l-4 border-[#CFAB8D] rounded-tl-2xl" />
-            <div className="absolute -bottom-4 -right-4 w-24 h-24 border-b-4 border-r-4 border-[#BBDCE5] rounded-br-2xl hidden lg:block" />
+            <div className="absolute -top-4 -left-4 w-24 h-24 border-t-4 border-l-4 border-elgato-sand rounded-tl-2xl" />
+            <div className="absolute -bottom-4 -right-4 w-24 h-24 border-b-4 border-r-4 border-elgato-blue rounded-br-2xl hidden lg:block" />
           </motion.div>
 
           {/* Right: Content */}
@@ -94,7 +94,7 @@ export default function AboutPreview() {
             <div className="space-y-6">
               <div>
                 <motion.p
-                  className="text-[#CFAB8D] font-medium mb-2 tracking-wide"
+                  className="text-elgato-sand font-medium mb-2 tracking-wide"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6 }}
@@ -102,15 +102,15 @@ export default function AboutPreview() {
                 >
                   À PROPOS
                 </motion.p>
-                <h2 className="text-4xl md:text-5xl font-light text-[#6B5B47] mb-6 tracking-tight">
+                <h2 className="text-4xl md:text-5xl font-light text-elgato-brown mb-6 tracking-tight">
                   Capturer l'émotion,
                   <br />
-                  <span className="text-[#CFAB8D]">Créer des souvenirs</span>
+                  <span className="text-elgato-sand">Créer des souvenirs</span>
                 </h2>
                 <div className="w-16 h-0.5 bg-gradient-to-r from-[#BBDCE5] to-[#CFAB8D]" />
               </div>
 
-              <div className="space-y-4 text-[#8B7355] leading-relaxed text-lg">
+              <div className="space-y-4 text-elgato-text-light leading-relaxed text-lg">
                 <p>
                   Basé à Paris depuis 2018, je suis un photographe passionné spécialisé dans la
                   capture de moments authentiques et intemporels. Mon approche artistique allie
@@ -141,12 +141,12 @@ export default function AboutPreview() {
                       viewport={{ once: true }}
                     >
                       <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#BBDCE5]/20 to-[#CFAB8D]/20 flex items-center justify-center mx-auto mb-3">
-                        <IconComponent className="w-6 h-6 text-[#CFAB8D]" />
+                        <IconComponent className="w-6 h-6 text-elgato-sand" />
                       </div>
-                      <div className="text-2xl md:text-3xl font-light text-[#6B5B47] mb-1">
+                      <div className="text-2xl md:text-3xl font-light text-elgato-brown mb-1">
                         {stat.value}
                       </div>
-                      <div className="text-xs md:text-sm text-[#8B7355]">
+                      <div className="text-xs md:text-sm text-elgato-text-light">
                         {stat.label}
                       </div>
                     </motion.div>
@@ -158,7 +158,7 @@ export default function AboutPreview() {
               <div className="pt-8">
                 <Link
                   href="/a-propos"
-                  className="group inline-flex items-center gap-3 text-[#CFAB8D] hover:text-[#B89B7F] font-medium text-lg transition-colors duration-300"
+                  className="group inline-flex items-center gap-3 text-elgato-sand hover:text-elgato-sand-dark font-medium text-lg transition-colors duration-300"
                 >
                   En savoir plus sur mon parcours
                   <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform duration-300" />

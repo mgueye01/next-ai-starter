@@ -32,59 +32,62 @@ const footerLinks = {
 };
 
 const socialLinks = [
-  { icon: Instagram, href: "https://instagram.com/elgatophoto", label: "Instagram", color: "#E4405F" },
-  { icon: Facebook, href: "https://facebook.com/elgatophoto", label: "Facebook", color: "#1877F2" },
-  { icon: Youtube, href: "https://youtube.com/elgatophoto", label: "YouTube", color: "#FF0000" }
+  { icon: Instagram, href: "https://instagram.com/elgatophoto", label: "Suivez-nous sur Instagram" },
+  { icon: Facebook, href: "https://facebook.com/elgatophoto", label: "Suivez-nous sur Facebook" },
+  { icon: Youtube, href: "https://youtube.com/elgatophoto", label: "Abonnez-vous sur YouTube" }
 ];
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-b from-[#ECEEDF]/30 to-[#ECEEDF]/60 border-t border-[#ECEEDF]">
+    <footer className="bg-gradient-to-b from-elgato-cream/30 to-elgato-cream/60 border-t border-elgato-cream" role="contentinfo">
       {/* Main Footer Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8">
 
           {/* Brand Column */}
           <div className="lg:col-span-4">
-            <Link href="/" className="inline-block mb-6">
+            <Link
+              href="/"
+              className="inline-block mb-6 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-elgato-sand focus-visible:ring-offset-2"
+            >
               <Image
                 src="/elgato-logo.webp"
-                alt="elGato Photo Paris"
+                alt="elGato Photo Paris - Retour à l'accueil"
                 width={180}
                 height={52}
                 className="logo"
                 priority
               />
             </Link>
-            <p className="text-[#8B7355] leading-relaxed mb-6">
+            <p className="text-elgato-text-secondary leading-relaxed mb-6">
               Photographe professionnel à Paris, spécialisé dans la photographie artistique,
               les mariages et la création de contenu visuel depuis 2018.
             </p>
 
             {/* Contact Info */}
-            <div className="space-y-3 mb-6">
+            <address className="not-italic space-y-3 mb-6">
               <a
                 href="mailto:contact@elgatophoto.com"
-                className="flex items-center gap-3 text-[#6B5B47] hover:text-[#CFAB8D] transition-colors duration-300 group"
+                className="flex items-center gap-3 text-elgato-text-primary hover:text-elgato-sand transition-colors duration-300 group rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-elgato-sand focus-visible:ring-offset-2"
               >
-                <Mail className="w-5 h-5 flex-shrink-0" />
+                <Mail className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
                 <span className="text-sm">contact@elgatophoto.com</span>
               </a>
               <a
-                href="tel:+33123456789"
-                className="flex items-center gap-3 text-[#6B5B47] hover:text-[#CFAB8D] transition-colors duration-300 group"
+                href="tel:+33677684836"
+                className="flex items-center gap-3 text-elgato-text-primary hover:text-elgato-sand transition-colors duration-300 group rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-elgato-sand focus-visible:ring-offset-2"
               >
-                <Phone className="w-5 h-5 flex-shrink-0" />
-                <span className="text-sm">+33 1 23 45 67 89</span>
+                <Phone className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
+                <span className="text-sm">+33 6 77 68 48 36</span>
               </a>
-              <div className="flex items-center gap-3 text-[#6B5B47]">
-                <MapPin className="w-5 h-5 flex-shrink-0" />
+              <div className="flex items-center gap-3 text-elgato-text-primary">
+                <MapPin className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
                 <span className="text-sm">Paris, France</span>
               </div>
-            </div>
+            </address>
 
-            {/* Social Links */}
-            <div className="flex gap-3">
+            {/* Social Links - 48px touch targets for mobile */}
+            <div className="flex gap-3" role="list" aria-label="Réseaux sociaux">
               {socialLinks.map((social, index) => {
                 const IconComponent = social.icon;
                 return (
@@ -94,9 +97,10 @@ export default function Footer() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={social.label}
-                    className="w-10 h-10 rounded-full bg-white hover:bg-gradient-to-br from-[#BBDCE5] to-[#CFAB8D] flex items-center justify-center text-[#6B5B47] hover:text-white transition-all duration-300 shadow-sm hover:shadow-md hover:scale-110"
+                    role="listitem"
+                    className="w-12 h-12 rounded-full bg-white hover:bg-gradient-to-br hover:from-elgato-blue hover:to-elgato-sand flex items-center justify-center text-elgato-brown hover:text-white transition-all duration-300 shadow-sm hover:shadow-md hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-elgato-sand focus-visible:ring-offset-2"
                   >
-                    <IconComponent className="w-5 h-5" />
+                    <IconComponent className="w-5 h-5" aria-hidden="true" />
                   </a>
                 );
               })}
@@ -104,61 +108,72 @@ export default function Footer() {
           </div>
 
           {/* Services Column */}
-          <div className="lg:col-span-3">
-            <h3 className="text-lg font-medium text-[#6B5B47] mb-6">Services</h3>
-            <ul className="space-y-3">
+          <nav className="lg:col-span-3" aria-labelledby="footer-services-heading">
+            <h3 id="footer-services-heading" className="text-lg font-medium text-elgato-brown mb-6">Services</h3>
+            <ul className="space-y-3" role="list">
               {footerLinks.services.map((link, index) => (
                 <li key={index}>
                   <Link
                     href={link.href}
-                    className="text-[#8B7355] hover:text-[#CFAB8D] transition-colors duration-300 text-sm flex items-center gap-2 group"
+                    className="text-elgato-text-secondary hover:text-elgato-sand transition-colors duration-300 text-sm flex items-center gap-2 group rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-elgato-sand focus-visible:ring-offset-2 py-1"
                   >
-                    <span className="w-1 h-1 rounded-full bg-[#CFAB8D] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <span className="w-1 h-1 rounded-full bg-elgato-sand opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-300" aria-hidden="true" />
                     {link.name}
                   </Link>
                 </li>
               ))}
             </ul>
-          </div>
+          </nav>
 
           {/* Company Column */}
-          <div className="lg:col-span-2">
-            <h3 className="text-lg font-medium text-[#6B5B47] mb-6">Entreprise</h3>
-            <ul className="space-y-3">
+          <nav className="lg:col-span-2" aria-labelledby="footer-company-heading">
+            <h3 id="footer-company-heading" className="text-lg font-medium text-elgato-brown mb-6">Entreprise</h3>
+            <ul className="space-y-3" role="list">
               {footerLinks.company.map((link, index) => (
                 <li key={index}>
                   <Link
                     href={link.href}
-                    className="text-[#8B7355] hover:text-[#CFAB8D] transition-colors duration-300 text-sm flex items-center gap-2 group"
+                    className="text-elgato-text-secondary hover:text-elgato-sand transition-colors duration-300 text-sm flex items-center gap-2 group rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-elgato-sand focus-visible:ring-offset-2 py-1"
                   >
-                    <span className="w-1 h-1 rounded-full bg-[#CFAB8D] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <span className="w-1 h-1 rounded-full bg-elgato-sand opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-300" aria-hidden="true" />
                     {link.name}
                   </Link>
                 </li>
               ))}
             </ul>
-          </div>
+          </nav>
 
           {/* Newsletter Column */}
           <div className="lg:col-span-3">
-            <h3 className="text-lg font-medium text-[#6B5B47] mb-6">Newsletter</h3>
-            <p className="text-[#8B7355] text-sm mb-4 leading-relaxed">
+            <h3 id="newsletter-heading" className="text-lg font-medium text-elgato-brown mb-6">Newsletter</h3>
+            <p className="text-elgato-text-secondary text-sm mb-4 leading-relaxed">
               Recevez mes dernières créations, conseils photo et offres exclusives.
             </p>
-            <form className="space-y-3">
+            <form className="space-y-3" aria-labelledby="newsletter-heading">
               <div className="relative">
+                <label htmlFor="newsletter-email" className="sr-only">
+                  Adresse email pour la newsletter
+                </label>
                 <input
                   type="email"
+                  id="newsletter-email"
+                  name="email"
                   placeholder="Votre email"
-                  className="w-full px-4 py-3 rounded-xl border border-[#ECEEDF] bg-white focus:border-[#CFAB8D] focus:ring-2 focus:ring-[#CFAB8D]/20 outline-none transition-all duration-300 text-sm"
+                  required
+                  autoComplete="email"
+                  aria-describedby="newsletter-description"
+                  className="w-full px-4 py-3 rounded-xl border border-elgato-cream bg-white text-elgato-text-primary placeholder:text-elgato-text-light focus:border-elgato-sand focus:ring-2 focus:ring-elgato-sand/20 outline-none transition-all duration-300 text-sm"
                 />
+                <span id="newsletter-description" className="sr-only">
+                  Entrez votre adresse email pour recevoir notre newsletter
+                </span>
               </div>
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-[#BBDCE5] to-[#CFAB8D] text-white px-6 py-3 rounded-xl hover:from-[#A5C9D4] hover:to-[#B89B7F] transition-all duration-300 flex items-center justify-center gap-2 group text-sm font-medium shadow-sm hover:shadow-md"
+                className="w-full bg-gradient-to-r from-elgato-blue to-elgato-sand text-white px-6 py-3 rounded-xl hover:from-elgato-blue-dark hover:to-elgato-sand-dark transition-all duration-300 flex items-center justify-center gap-2 group text-sm font-medium shadow-sm hover:shadow-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-elgato-sand focus-visible:ring-offset-2"
               >
                 S'abonner
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" aria-hidden="true" />
               </button>
             </form>
           </div>
@@ -166,26 +181,29 @@ export default function Footer() {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-[#ECEEDF]">
+      <div className="border-t border-elgato-cream">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             {/* Copyright */}
-            <p className="text-sm text-[#8B7355] text-center md:text-left">
+            <p className="text-sm text-elgato-text-secondary text-center md:text-left">
               © {new Date().getFullYear()} elGato Photo Paris. Tous droits réservés.
             </p>
 
             {/* Legal Links */}
-            <div className="flex flex-wrap justify-center gap-6">
-              {footerLinks.legal.map((link, index) => (
-                <Link
-                  key={index}
-                  href={link.href}
-                  className="text-sm text-[#8B7355] hover:text-[#CFAB8D] transition-colors duration-300"
-                >
-                  {link.name}
-                </Link>
-              ))}
-            </div>
+            <nav aria-label="Liens légaux">
+              <ul className="flex flex-wrap justify-center gap-6" role="list">
+                {footerLinks.legal.map((link, index) => (
+                  <li key={index}>
+                    <Link
+                      href={link.href}
+                      className="text-sm text-elgato-text-secondary hover:text-elgato-sand transition-colors duration-300 rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-elgato-sand focus-visible:ring-offset-2 py-1 px-1"
+                    >
+                      {link.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </div>
         </div>
       </div>

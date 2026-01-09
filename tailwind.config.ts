@@ -63,6 +63,39 @@ export default {
         },
       },
       colors: {
+        // elGato Photo Brand Design Tokens
+        elgato: {
+          // Primary brand colors
+          brown: {
+            DEFAULT: "#6B5B47",
+            light: "#8B7355",
+            dark: "#5A4A3A",
+          },
+          // Accent colors
+          blue: {
+            DEFAULT: "#BBDCE5",
+            light: "#D4E9EF",
+            dark: "#A5C9D4",
+          },
+          sand: {
+            DEFAULT: "#CFAB8D",
+            light: "#D9C4B0",
+            dark: "#B89B7F",
+          },
+          // Background colors
+          cream: {
+            DEFAULT: "#ECEEDF",
+            light: "#F5F6ED",
+            dark: "#E5E7D9",
+          },
+          // Text colors (WCAG AA compliant)
+          text: {
+            primary: "#4A4035",    // Darker for better contrast
+            secondary: "#5D5147",  // Medium contrast
+            muted: "#6B5B47",      // Original brown
+            light: "#8B7355",      // For large text only
+          },
+        },
         beige: "#f8e8e0",
         "dark-beige": "#fcf3ed",
         "dark-blue": "#1D265D",

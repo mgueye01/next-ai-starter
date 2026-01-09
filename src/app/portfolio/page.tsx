@@ -58,10 +58,10 @@ export default function Portfolio() {
           className="text-center mb-16"
           variants={itemVariants}
         >
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-[#6B5B47] mb-6">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-elgato-brown mb-6">
             Portfolio
           </h1>
-          <p className="text-lg md:text-xl text-[#8B7355] max-w-3xl mx-auto leading-relaxed mb-8">
+          <p className="text-lg md:text-xl text-elgato-text-light max-w-3xl mx-auto leading-relaxed mb-8">
             Découvrez mon travail photographique à travers différents univers. 
             Chaque image raconte une histoire unique, capturée avec passion dans les plus beaux lieux de Paris et d'ailleurs.
           </p>
@@ -72,20 +72,20 @@ export default function Portfolio() {
             variants={itemVariants}
           >
             <div className="text-center p-4 bg-white/50 rounded-xl backdrop-blur-sm">
-              <div className="text-2xl font-bold text-[#CFAB8D]">{totalImages}+</div>
-              <div className="text-sm text-[#8B7355]">Photos</div>
+              <div className="text-2xl font-bold text-elgato-sand">{totalImages}+</div>
+              <div className="text-sm text-elgato-text-light">Photos</div>
             </div>
             <div className="text-center p-4 bg-white/50 rounded-xl backdrop-blur-sm">
-              <div className="text-2xl font-bold text-[#CFAB8D]">{totalProjects}</div>
-              <div className="text-sm text-[#8B7355]">Projets</div>
+              <div className="text-2xl font-bold text-elgato-sand">{totalProjects}</div>
+              <div className="text-sm text-elgato-text-light">Projets</div>
             </div>
             <div className="text-center p-4 bg-white/50 rounded-xl backdrop-blur-sm">
-              <div className="text-2xl font-bold text-[#CFAB8D]">{categories.length}</div>
-              <div className="text-sm text-[#8B7355]">Catégories</div>
+              <div className="text-2xl font-bold text-elgato-sand">{categories.length}</div>
+              <div className="text-sm text-elgato-text-light">Catégories</div>
             </div>
             <div className="text-center p-4 bg-white/50 rounded-xl backdrop-blur-sm">
-              <div className="text-2xl font-bold text-[#CFAB8D]">{featuredImages}</div>
-              <div className="text-sm text-[#8B7355]">Coups de cœur</div>
+              <div className="text-2xl font-bold text-elgato-sand">{featuredImages}</div>
+              <div className="text-sm text-elgato-text-light">Coups de cœur</div>
             </div>
           </motion.div>
         </motion.div>
@@ -96,13 +96,13 @@ export default function Portfolio() {
           variants={itemVariants}
         >
           {/* View Mode Selector */}
-          <div className="flex bg-[#ECEEDF] rounded-xl p-1">
+          <div className="flex bg-elgato-cream rounded-xl p-1">
             <button
               onClick={() => setViewMode('gallery')}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                 viewMode === 'gallery' 
-                  ? 'bg-white text-[#6B5B47] shadow-md' 
-                  : 'text-[#8B7355] hover:text-[#6B5B47]'
+                  ? 'bg-white text-elgato-brown shadow-md' 
+                  : 'text-elgato-text-light hover:text-elgato-brown'
               }`}
             >
               <Grid3X3 className="w-4 h-4" />
@@ -112,8 +112,8 @@ export default function Portfolio() {
               onClick={() => setViewMode('projects')}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                 viewMode === 'projects' 
-                  ? 'bg-white text-[#6B5B47] shadow-md' 
-                  : 'text-[#8B7355] hover:text-[#6B5B47]'
+                  ? 'bg-white text-elgato-brown shadow-md' 
+                  : 'text-elgato-text-light hover:text-elgato-brown'
               }`}
             >
               <List className="w-4 h-4" />
@@ -123,8 +123,8 @@ export default function Portfolio() {
               onClick={() => setViewMode('sections')}
               className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-all ${
                 viewMode === 'sections' 
-                  ? 'bg-white text-[#6B5B47] shadow-md' 
-                  : 'text-[#8B7355] hover:text-[#6B5B47]'
+                  ? 'bg-white text-elgato-brown shadow-md' 
+                  : 'text-elgato-text-light hover:text-elgato-brown'
               }`}
             >
               <Eye className="w-4 h-4" />
@@ -134,13 +134,13 @@ export default function Portfolio() {
 
           {/* Layout Controls (only for gallery view) */}
           {viewMode === 'gallery' && (
-            <div className="flex bg-[#ECEEDF] rounded-xl p-1">
+            <div className="flex bg-elgato-cream rounded-xl p-1">
               <button
                 onClick={() => setLayoutMode('masonry')}
                 className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                   layoutMode === 'masonry' 
-                    ? 'bg-white text-[#6B5B47] shadow-md' 
-                    : 'text-[#8B7355] hover:text-[#6B5B47]'
+                    ? 'bg-white text-elgato-brown shadow-md' 
+                    : 'text-elgato-text-light hover:text-elgato-brown'
                 }`}
               >
                 Masonry
@@ -149,8 +149,8 @@ export default function Portfolio() {
                 onClick={() => setLayoutMode('grid')}
                 className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                   layoutMode === 'grid' 
-                    ? 'bg-white text-[#6B5B47] shadow-md' 
-                    : 'text-[#8B7355] hover:text-[#6B5B47]'
+                    ? 'bg-white text-elgato-brown shadow-md' 
+                    : 'text-elgato-text-light hover:text-elgato-brown'
                 }`}
               >
                 Grille
@@ -159,8 +159,8 @@ export default function Portfolio() {
                 onClick={() => setLayoutMode('justified')}
                 className={`px-3 py-2 rounded-lg text-sm font-medium transition-all ${
                   layoutMode === 'justified' 
-                    ? 'bg-white text-[#6B5B47] shadow-md' 
-                    : 'text-[#8B7355] hover:text-[#6B5B47]'
+                    ? 'bg-white text-elgato-brown shadow-md' 
+                    : 'text-elgato-text-light hover:text-elgato-brown'
                 }`}
               >
                 Justifié
@@ -201,7 +201,7 @@ export default function Portfolio() {
           className="mt-20 mb-16"
           variants={itemVariants}
         >
-          <h2 className="text-3xl md:text-4xl font-light text-[#6B5B47] mb-8 text-center">
+          <h2 className="text-3xl md:text-4xl font-light text-elgato-brown mb-8 text-center">
             Ce que disent mes clients
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -224,17 +224,17 @@ export default function Portfolio() {
             ].map((testimonial, index) => (
               <div
                 key={index}
-                className="bg-white rounded-2xl p-6 border border-[#ECEEDF] hover:border-[#CFAB8D]/30 transition-all duration-300 hover:shadow-lg"
+                className="bg-white rounded-2xl p-6 border border-elgato-cream hover:border-elgato-sand/30 transition-all duration-300 hover:shadow-lg"
               >
                 <div className="flex justify-center gap-1 mb-4">
                   {[...Array(testimonial.rating)].map((_, i) => (
-                    <Star key={i} className="w-5 h-5 fill-[#CFAB8D] text-[#CFAB8D]" />
+                    <Star key={i} className="w-5 h-5 fill-elgato-sand text-elgato-sand" />
                   ))}
                 </div>
-                <blockquote className="text-[#6B5B47] leading-relaxed mb-4 italic text-center">
+                <blockquote className="text-elgato-brown leading-relaxed mb-4 italic text-center">
                   "{testimonial.text}"
                 </blockquote>
-                <cite className="text-[#8B7355] font-medium not-italic block text-center text-sm">
+                <cite className="text-elgato-text-light font-medium not-italic block text-center text-sm">
                   — {testimonial.author}
                 </cite>
               </div>
@@ -244,20 +244,20 @@ export default function Portfolio() {
 
         {/* CTA Section */}
         <motion.div
-          className="mt-12 text-center bg-gradient-to-r from-[#BBDCE5] to-[#D9C4B0] rounded-3xl p-8 md:p-12 border border-[#CFAB8D]/30"
+          className="mt-12 text-center bg-gradient-to-r from-elgato-blue to-elgato-sand-light rounded-3xl p-8 md:p-12 border border-elgato-sand/30"
           variants={itemVariants}
         >
-          <h2 className="text-2xl md:text-3xl font-light text-[#6B5B47] mb-4">
+          <h2 className="text-2xl md:text-3xl font-light text-elgato-brown mb-4">
             Prêt pour votre séance photo ?
           </h2>
-          <p className="text-base md:text-lg text-[#6B5B47]/80 mb-8 max-w-2xl mx-auto">
+          <p className="text-base md:text-lg text-elgato-brown/80 mb-8 max-w-2xl mx-auto">
             Contactez-moi pour discuter de votre projet et créer ensemble des images mémorables.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link
                 href="/contact"
-                className="group flex items-center justify-center gap-2 px-6 md:px-8 py-3 md:py-4 bg-[#CFAB8D] text-[#6B5B47] rounded-xl font-medium hover:bg-[#C49A7A] transition-colors duration-300 shadow-lg hover:shadow-xl"
+                className="group flex items-center justify-center gap-2 px-8 py-4 min-w-[200px] bg-elgato-sand text-elgato-brown rounded-xl font-medium border-2 border-transparent hover:bg-elgato-sand-dark transition-colors duration-300 shadow-lg hover:shadow-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-elgato-sand focus-visible:ring-offset-2"
               >
                 Me contacter
                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -266,7 +266,7 @@ export default function Portfolio() {
             <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
               <Link
                 href="/services/tarifs"
-                className="flex items-center justify-center gap-2 px-6 md:px-8 py-3 md:py-4 border-2 border-[#6B5B47] text-[#6B5B47] rounded-xl font-medium hover:bg-[#6B5B47]/10 transition-colors duration-300"
+                className="flex items-center justify-center gap-2 px-8 py-4 min-w-[200px] border-2 border-elgato-brown text-elgato-brown rounded-xl font-medium hover:bg-elgato-brown/10 transition-colors duration-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-elgato-sand focus-visible:ring-offset-2"
               >
                 Voir les tarifs
               </Link>
@@ -300,10 +300,10 @@ export default function Portfolio() {
                 <div className="text-2xl mb-2 group-hover:scale-110 transition-transform">
                   {emoji}
                 </div>
-                <div className="font-medium text-[#6B5B47] group-hover:text-[#CFAB8D] transition-colors">
+                <div className="font-medium text-elgato-brown group-hover:text-elgato-sand transition-colors">
                   {label}
                 </div>
-                <div className="text-sm text-[#8B7355]">
+                <div className="text-sm text-elgato-text-light">
                   {count} photos
                 </div>
               </motion.button>

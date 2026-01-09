@@ -86,6 +86,63 @@ export const galleryRouter = createTRPCRouter({
     }));
   }),
 
+  // Get admin dashboard stats
+  getStats: protectedProcedure.query(async ({ ctx }) => {
+    const userId = ctx.session.user.id;
+
+    // Count galleries by status
+    const [galleriesByStatus, totalClients, totalMedia, recentSessions] = await Promise.all([
+      prisma.gallery.groupBy({
+        by: ['status'],
+        where: { createdById: userId },
+        _count: true,
+      }),
+      prisma.clientGalleryAccess.count({
+        where: { gallery: { createdById: userId } },
+      }),
+      prisma.galleryMedia.count({
+        where: { gallery: { createdById: userId } },
+      }),
+      prisma.guestSession.findMany({
+        where: { gallery: { createdById: userId } },
+        orderBy: { createdAt: 'desc' },
+        take: 10,
+        include: {
+          gallery: { select: { title: true, slug: true } },
+          _count: { select: { downloads: true } },
+        },
+      }),
+    ]);
+
+    const statusCounts: Record<string, number> = {
+      DRAFT: 0,
+      PUBLISHED: 0,
+      ARCHIVED: 0,
+    };
+    galleriesByStatus.forEach((g: { status: string; _count: number }) => {
+      statusCounts[g.status] = g._count;
+    });
+
+    return {
+      galleries: {
+        total: statusCounts.DRAFT + statusCounts.PUBLISHED + statusCounts.ARCHIVED,
+        draft: statusCounts.DRAFT,
+        published: statusCounts.PUBLISHED,
+        archived: statusCounts.ARCHIVED,
+      },
+      clients: totalClients,
+      photos: totalMedia,
+      recentActivity: recentSessions.map((s) => ({
+        id: s.id,
+        galleryTitle: s.gallery.title,
+        gallerySlug: s.gallery.slug,
+        guestName: s.name,
+        lastAccess: s.createdAt,
+        downloadCount: s._count.downloads,
+      })),
+    };
+  }),
+
   // Get gallery by ID (admin)
   getById: protectedProcedure
     .input(z.object({ id: z.string() }))

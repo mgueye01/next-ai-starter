@@ -71,11 +71,11 @@ export default function PhotographyProcess() {
           transition={{ duration: 0.7 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-light text-[#6B5B47] mb-6 tracking-tight">
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-light text-elgato-brown mb-6 tracking-tight">
             Mon Processus Créatif
           </h2>
           <div className="w-24 h-0.5 bg-gradient-to-r from-[#BBDCE5] to-[#CFAB8D] mx-auto mb-8" />
-          <p className="text-lg md:text-xl text-[#8B7355] max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl text-elgato-text-light max-w-3xl mx-auto leading-relaxed">
             De la première consultation à la livraison finale, une expérience professionnelle
             et personnalisée à chaque étape.
           </p>
@@ -149,9 +149,9 @@ export default function PhotographyProcess() {
 
                     {/* Content Card */}
                     <div className="flex-1 lg:mt-8">
-                      <div className="bg-white rounded-2xl p-6 lg:p-8 border border-[#ECEEDF] hover:border-[#CFAB8D]/30 transition-all duration-500 hover:shadow-xl group">
+                      <div className="bg-white rounded-2xl p-6 lg:p-8 border border-elgato-cream hover:border-elgato-sand/30 transition-all duration-500 hover:shadow-xl group">
                         <div className="flex items-center justify-between mb-3">
-                          <h3 className="text-2xl font-light text-[#6B5B47] group-hover:text-[#8B7355] transition-colors">
+                          <h3 className="text-2xl font-light text-elgato-brown group-hover:text-elgato-text-light transition-colors">
                             {step.title}
                           </h3>
                           <span
@@ -165,14 +165,14 @@ export default function PhotographyProcess() {
                           </span>
                         </div>
 
-                        <p className="text-[#8B7355] leading-relaxed">
+                        <p className="text-elgato-text-light leading-relaxed">
                           {step.description}
                         </p>
 
                         {/* Progress indicator */}
-                        <div className="mt-4 pt-4 border-t border-[#ECEEDF]">
+                        <div className="mt-4 pt-4 border-t border-elgato-cream">
                           <div className="flex items-center gap-2">
-                            <div className="flex-1 h-1 bg-[#ECEEDF] rounded-full overflow-hidden">
+                            <div className="flex-1 h-1 bg-elgato-cream rounded-full overflow-hidden">
                               <motion.div
                                 className="h-full rounded-full"
                                 style={{ backgroundColor: step.color }}
@@ -182,7 +182,7 @@ export default function PhotographyProcess() {
                                 viewport={{ once: true }}
                               />
                             </div>
-                            <span className="text-xs text-[#8B7355] font-medium">
+                            <span className="text-xs text-elgato-text-light font-medium">
                               {Math.round(((index + 1) / processSteps.length) * 100)}%
                             </span>
                           </div>
@@ -204,13 +204,13 @@ export default function PhotographyProcess() {
           transition={{ duration: 0.7, delay: 0.4 }}
           viewport={{ once: true }}
         >
-          <p className="text-[#8B7355] mb-6 text-lg">
+          <p className="text-elgato-text-light mb-6 text-lg">
             Prêt à commencer votre projet ?
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <a
               href="/portfolio"
-              className="inline-flex items-center gap-2 px-8 py-4 border-2 border-[#BBDCE5] text-[#6B5B47] rounded-full hover:bg-[#BBDCE5] hover:text-white transition-all duration-300"
+              className="inline-flex items-center gap-2 px-8 py-4 border-2 border-elgato-blue text-elgato-brown rounded-full hover:bg-elgato-blue hover:text-white transition-all duration-300"
             >
               Voir mes réalisations
             </a>

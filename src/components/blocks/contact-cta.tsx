@@ -118,7 +118,7 @@ export default function ContactCTA() {
           >
             <Link
               href="/contact"
-              className="group w-full sm:w-auto relative overflow-hidden flex items-center justify-center gap-3 bg-gradient-to-r from-[#BBDCE5] to-[#CFAB8D] text-white hover:from-[#A5C9D4] hover:to-[#B89B7F] rounded-full px-10 py-5 text-lg font-medium shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105"
+              className="group w-full sm:w-auto relative overflow-hidden flex items-center justify-center gap-3 bg-gradient-to-r from-[#BBDCE5] to-[#CFAB8D] text-white hover:from-[#A5C9D4] hover:to-[#B89B7F] rounded-full px-10 py-5 text-lg font-medium shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105 border-2 border-transparent"
             >
               <span className="relative z-10">Réserver une consultation</span>
               <Calendar className="w-5 h-5 relative z-10 group-hover:rotate-12 transition-transform duration-300" />

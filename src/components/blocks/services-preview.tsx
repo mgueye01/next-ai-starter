@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Camera, Heart, Video, ArrowRight } from 'lucide-react';
+import { Camera, Heart, Video, ArrowRight, Building2, PartyPopper, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 
 const services = [
@@ -21,11 +21,32 @@ const services = [
     href: "/services/mariages"
   },
   {
+    icon: PartyPopper,
+    title: "Événements",
+    description: "Capturer l'atmosphère de vos moments spéciaux",
+    color: "#D9C4B0",
+    href: "/services/evenements"
+  },
+  {
     icon: Video,
     title: "Vidéographie",
     description: "Films cinématographiques de haute qualité",
-    color: "#D9C4B0",
+    color: "#BBDCE5",
     href: "/services/video"
+  },
+  {
+    icon: Building2,
+    title: "Corporate",
+    description: "Photos professionnelles pour votre entreprise",
+    color: "#CFAB8D",
+    href: "/services/corporate"
+  },
+  {
+    icon: Sparkles,
+    title: "Contenu Digital",
+    description: "Création de contenu pour vos réseaux sociaux",
+    color: "#D9C4B0",
+    href: "/services/contenu"
   }
 ];
 
@@ -42,10 +63,10 @@ export default function ServicesPreview() {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <h2 className="text-3xl md:text-4xl font-light text-[#6B5B47] mb-4">
+          <h2 className="text-3xl md:text-4xl font-light text-elgato-brown mb-4">
             Services
           </h2>
-          <div className="w-16 h-0.5 bg-gradient-to-r from-[#BBDCE5] to-[#CFAB8D] mx-auto" />
+          <div className="w-16 h-0.5 bg-gradient-to-r from-elgato-blue to-elgato-sand mx-auto" />
         </motion.div>
 
         {/* Services Grid */}
@@ -61,7 +82,7 @@ export default function ServicesPreview() {
                 viewport={{ once: true }}
               >
                 <Link href={service.href}>
-                  <div className="group relative bg-white rounded-xl p-6 border border-[#ECEEDF] hover:border-[#CFAB8D]/30 transition-all duration-300 hover:shadow-lg cursor-pointer">
+                  <div className="group relative bg-white rounded-xl p-6 border border-elgato-cream hover:border-elgato-sand/30 transition-all duration-300 hover:shadow-lg cursor-pointer">
                     {/* Icon */}
                     <div
                       className="w-12 h-12 rounded-full bg-white flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300"
@@ -71,10 +92,10 @@ export default function ServicesPreview() {
                     </div>
 
                     {/* Content */}
-                    <h3 className="text-xl font-light text-[#6B5B47] mb-2">
+                    <h3 className="text-xl font-light text-elgato-brown mb-2">
                       {service.title}
                     </h3>
-                    <p className="text-sm text-[#8B7355] leading-relaxed">
+                    <p className="text-sm text-elgato-text-light leading-relaxed">
                       {service.description}
                     </p>
 
@@ -99,7 +120,7 @@ export default function ServicesPreview() {
         >
           <Link
             href="/services"
-            className="group inline-flex items-center gap-2 text-[#CFAB8D] hover:text-[#B89B7F] font-medium transition-colors duration-300"
+            className="group inline-flex items-center gap-2 text-elgato-sand hover:text-elgato-sand-dark font-medium transition-colors duration-300"
           >
             Voir tous les services
             <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />

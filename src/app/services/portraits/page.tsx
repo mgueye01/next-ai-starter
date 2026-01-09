@@ -91,16 +91,16 @@ export default function PortraitsPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-6">
-              <h2 className="text-4xl md:text-5xl font-light text-[#6B5B47]">
+              <h2 className="text-4xl md:text-5xl font-light text-elgato-brown">
                 Une Expérience Photographique Unique
               </h2>
               <div className="w-24 h-0.5 bg-gradient-to-r from-[#BBDCE5] to-[#CFAB8D]" />
-              <p className="text-lg text-[#8B7355] leading-relaxed">
+              <p className="text-lg text-elgato-text-light leading-relaxed">
                 Spécialisé dans la photographie de portrait depuis plus de 5 ans, je crée des images
                 qui racontent votre histoire unique. Mon approche artistique combine techniques
                 classiques et vision contemporaine pour des résultats intemporels.
               </p>
-              <p className="text-lg text-[#8B7355] leading-relaxed">
+              <p className="text-lg text-elgato-text-light leading-relaxed">
                 Chaque séance est une collaboration créative où je vous guide avec bienveillance
                 pour capturer des expressions naturelles et authentiques. Que ce soit pour des
                 portraits professionnels, personnels ou artistiques, mon objectif est de révéler
@@ -109,31 +109,31 @@ export default function PortraitsPage() {
 
               <div className="grid grid-cols-2 gap-6 pt-8">
                 <div className="flex items-start gap-3">
-                  <Clock className="w-6 h-6 text-[#CFAB8D] flex-shrink-0 mt-1" />
+                  <Clock className="w-6 h-6 text-elgato-sand flex-shrink-0 mt-1" />
                   <div>
-                    <h3 className="font-medium text-[#6B5B47] mb-1">Flexible</h3>
-                    <p className="text-sm text-[#8B7355]">Séances 1-3h selon vos besoins</p>
+                    <h3 className="font-medium text-elgato-brown mb-1">Flexible</h3>
+                    <p className="text-sm text-elgato-text-light">Séances 1-3h selon vos besoins</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <MapPin className="w-6 h-6 text-[#CFAB8D] flex-shrink-0 mt-1" />
+                  <MapPin className="w-6 h-6 text-elgato-sand flex-shrink-0 mt-1" />
                   <div>
-                    <h3 className="font-medium text-[#6B5B47] mb-1">Lieux Variés</h3>
-                    <p className="text-sm text-[#8B7355]">Studio, extérieur, ou chez vous</p>
+                    <h3 className="font-medium text-elgato-brown mb-1">Lieux Variés</h3>
+                    <p className="text-sm text-elgato-text-light">Studio, extérieur, ou chez vous</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <Star className="w-6 h-6 text-[#CFAB8D] flex-shrink-0 mt-1" />
+                  <Star className="w-6 h-6 text-elgato-sand flex-shrink-0 mt-1" />
                   <div>
-                    <h3 className="font-medium text-[#6B5B47] mb-1">Qualité Pro</h3>
-                    <p className="text-sm text-[#8B7355]">Retouches artistiques incluses</p>
+                    <h3 className="font-medium text-elgato-brown mb-1">Qualité Pro</h3>
+                    <p className="text-sm text-elgato-text-light">Retouches artistiques incluses</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <Camera className="w-6 h-6 text-[#CFAB8D] flex-shrink-0 mt-1" />
+                  <Camera className="w-6 h-6 text-elgato-sand flex-shrink-0 mt-1" />
                   <div>
-                    <h3 className="font-medium text-[#6B5B47] mb-1">Coaching</h3>
-                    <p className="text-sm text-[#8B7355]">Direction et poses naturelles</p>
+                    <h3 className="font-medium text-elgato-brown mb-1">Coaching</h3>
+                    <p className="text-sm text-elgato-text-light">Direction et poses naturelles</p>
                   </div>
                 </div>
               </div>
@@ -155,11 +155,11 @@ export default function PortraitsPage() {
       <section className="py-20 md:py-32 bg-gradient-to-b from-white to-[#ECEEDF]/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-light text-[#6B5B47] mb-6">
+            <h2 className="text-4xl md:text-5xl font-light text-elgato-brown mb-6">
               Forfaits & Tarifs
             </h2>
             <div className="w-24 h-0.5 bg-gradient-to-r from-[#BBDCE5] to-[#CFAB8D] mx-auto mb-6" />
-            <p className="text-lg text-[#8B7355] max-w-2xl mx-auto">
+            <p className="text-lg text-elgato-text-light max-w-2xl mx-auto">
               Choisissez le forfait qui correspond le mieux à vos besoins.
               Tous incluent retouches professionnelles et galerie en ligne.
             </p>
@@ -171,8 +171,8 @@ export default function PortraitsPage() {
                 key={index}
                 className={`relative bg-white rounded-2xl p-8 border-2 ${
                   pkg.popular
-                    ? 'border-[#CFAB8D] shadow-2xl scale-105'
-                    : 'border-[#ECEEDF] shadow-lg'
+                    ? 'border-elgato-sand shadow-2xl scale-105'
+                    : 'border-elgato-cream shadow-lg'
                 } transition-all duration-300 hover:shadow-2xl`}
               >
                 {pkg.popular && (
@@ -182,9 +182,9 @@ export default function PortraitsPage() {
                 )}
 
                 <div className="text-center mb-8">
-                  <h3 className="text-2xl font-medium text-[#6B5B47] mb-2">{pkg.name}</h3>
-                  <div className="text-5xl font-light text-[#CFAB8D] mb-4">{pkg.price}</div>
-                  <div className="flex items-center justify-center gap-4 text-sm text-[#8B7355]">
+                  <h3 className="text-2xl font-medium text-elgato-brown mb-2">{pkg.name}</h3>
+                  <div className="text-5xl font-light text-elgato-sand mb-4">{pkg.price}</div>
+                  <div className="flex items-center justify-center gap-4 text-sm text-elgato-text-light">
                     <span className="flex items-center gap-1">
                       <Clock className="w-4 h-4" />
                       {pkg.duration}
@@ -199,8 +199,8 @@ export default function PortraitsPage() {
                 <ul className="space-y-4 mb-8">
                   {pkg.features.map((feature, idx) => (
                     <li key={idx} className="flex items-start gap-3">
-                      <Check className="w-5 h-5 text-[#CFAB8D] flex-shrink-0 mt-0.5" />
-                      <span className="text-[#6B5B47]">{feature}</span>
+                      <Check className="w-5 h-5 text-elgato-sand flex-shrink-0 mt-0.5" />
+                      <span className="text-elgato-brown">{feature}</span>
                     </li>
                   ))}
                 </ul>
@@ -210,7 +210,7 @@ export default function PortraitsPage() {
                   className={`block text-center py-4 rounded-xl font-medium transition-all duration-300 ${
                     pkg.popular
                       ? 'bg-gradient-to-r from-[#CFAB8D] to-[#B89B7F] text-white hover:shadow-lg'
-                      : 'border-2 border-[#CFAB8D] text-[#CFAB8D] hover:bg-[#CFAB8D] hover:text-white'
+                      : 'border-2 border-elgato-sand text-elgato-sand hover:bg-elgato-sand hover:text-white'
                   }`}
                 >
                   Réserver
@@ -220,12 +220,12 @@ export default function PortraitsPage() {
           </div>
 
           <div className="text-center mt-12">
-            <p className="text-[#8B7355] mb-4">
+            <p className="text-elgato-text-light mb-4">
               Besoin d'un forfait personnalisé ? Contactez-moi pour un devis sur mesure.
             </p>
             <Link
               href="/contact"
-              className="inline-flex items-center gap-2 text-[#CFAB8D] hover:text-[#B89B7F] font-medium"
+              className="inline-flex items-center gap-2 text-elgato-sand hover:text-elgato-sand-dark font-medium"
             >
               Demander un devis personnalisé
               <ArrowRight className="w-5 h-5" />
@@ -237,23 +237,23 @@ export default function PortraitsPage() {
       {/* CTA Section */}
       <section className="py-20 bg-gradient-to-br from-[#BBDCE5]/10 to-[#CFAB8D]/10">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl md:text-4xl font-light text-[#6B5B47] mb-6">
+          <h2 className="text-3xl md:text-4xl font-light text-elgato-brown mb-6">
             Prêt à Créer des Portraits Exceptionnels ?
           </h2>
-          <p className="text-lg text-[#8B7355] mb-8">
+          <p className="text-lg text-elgato-text-light mb-8">
             Réservez votre consultation gratuite de 15 minutes pour discuter de votre projet.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/contact"
-              className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#BBDCE5] to-[#CFAB8D] text-white px-8 py-4 rounded-full hover:shadow-lg transition-all duration-300"
+              className="inline-flex items-center justify-center gap-2 bg-gradient-to-r from-[#BBDCE5] to-[#CFAB8D] text-white px-8 py-4 rounded-full border-2 border-transparent hover:shadow-lg transition-all duration-300"
             >
               Réserver une séance
               <ArrowRight className="w-5 h-5" />
             </Link>
             <Link
               href="/portfolio"
-              className="inline-flex items-center justify-center gap-2 border-2 border-[#CFAB8D] text-[#CFAB8D] px-8 py-4 rounded-full hover:bg-[#CFAB8D] hover:text-white transition-all duration-300"
+              className="inline-flex items-center justify-center gap-2 border-2 border-elgato-sand text-elgato-sand px-8 py-4 rounded-full hover:bg-elgato-sand hover:text-white transition-all duration-300"
             >
               Voir le portfolio
             </Link>

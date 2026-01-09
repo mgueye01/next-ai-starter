@@ -27,13 +27,22 @@ export const LazyImage: React.FC<LazyImageProps> = ({
   const [isLoaded, setIsLoaded] = useState(false);
   const [isInView, setIsInView] = useState(false);
   const [error, setError] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  // Set mounted state and detect mobile after hydration
+  useEffect(() => {
+    setIsMounted(true);
+    setIsMobile(window.innerWidth <= 768);
+  }, []);
 
   // Intersection Observer for lazy loading
   useEffect(() => {
     if (!enabled || !containerRef.current) return;
 
+    const rootMargin = isMobile ? '100px' : '50px';
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -42,7 +51,7 @@ export const LazyImage: React.FC<LazyImageProps> = ({
         }
       },
       {
-        rootMargin: window.innerWidth <= 768 ? '100px' : '50px',
+        rootMargin,
         threshold: 0.1
       }
     );
@@ -50,7 +59,7 @@ export const LazyImage: React.FC<LazyImageProps> = ({
     observer.observe(containerRef.current);
 
     return () => observer.disconnect();
-  }, [enabled]);
+  }, [enabled, isMobile]);
 
   // Handle image loading
   const handleImageLoad = () => {
@@ -79,13 +88,12 @@ export const LazyImage: React.FC<LazyImageProps> = ({
   // Generate placeholder image URL (low quality, blurred)
   const getPlaceholderSrc = () => {
     if (placeholder) return placeholder;
-    
+
     // Create a low-quality version of the image for faster loading
     try {
       const url = new URL(src);
       if (url.hostname.includes('unsplash.com')) {
-        // Use smaller dimensions for mobile
-        const isMobile = window.innerWidth <= 768;
+        // Use smaller dimensions for mobile (uses state to avoid hydration mismatch)
         const width = isMobile ? '30' : '50';
         return `${src}&w=${width}&q=10&blur=2`;
       }
@@ -100,8 +108,8 @@ export const LazyImage: React.FC<LazyImageProps> = ({
     try {
       const url = new URL(src);
       if (url.hostname.includes('unsplash.com')) {
-        const isMobile = window.innerWidth <= 768;
-        const width = isMobile ? window.innerWidth * 2 : '1200'; // 2x for retina
+        // Use state to avoid hydration mismatch - default to desktop size on SSR
+        const width = isMobile ? '800' : '1200'; // Fixed widths for consistency
         return `${src}&w=${width}&q=80&auto=format`;
       }
     } catch {
@@ -170,8 +178,8 @@ export const LazyImage: React.FC<LazyImageProps> = ({
             opacity: isLoaded ? 1 : 0,
             filter: isLoaded ? 'blur(0px)' : 'blur(4px)'
           }}
-          transition={{ 
-            duration: window.innerWidth <= 768 ? 0.4 : 0.6,
+          transition={{
+            duration: isMobile ? 0.4 : 0.6,
             ease: [0.25, 0.46, 0.45, 0.94]
           }}
         />
