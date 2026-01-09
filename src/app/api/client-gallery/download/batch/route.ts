@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
     // Return ZIP file
     const filename = `${gallery.title.replace(/[^a-zA-Z0-9]/g, "_")}_photos.zip`;
 
-    return new NextResponse(zipBuffer, {
+    return new NextResponse(new Uint8Array(zipBuffer), {
       headers: {
         "Content-Type": "application/zip",
         "Content-Disposition": `attachment; filename="${filename}"`,
