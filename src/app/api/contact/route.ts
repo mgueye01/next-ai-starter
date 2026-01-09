@@ -4,7 +4,18 @@ import { z } from 'zod';
 import { createElement } from 'react';
 import { ContactEmail } from '@/lib/email/templates/ContactEmail';
 
-const resend = new Resend(process.env.RESEND_API_KEY || '');
+// Lazy initialization to avoid build-time errors
+let resend: Resend | null = null;
+function getResend(): Resend {
+  if (!resend) {
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) {
+      throw new Error('RESEND_API_KEY is not configured');
+    }
+    resend = new Resend(apiKey);
+  }
+  return resend;
+}
 
 // Rate limiting store (in production, use Redis or similar)
 const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
@@ -91,7 +102,7 @@ export async function POST(request: NextRequest) {
     const { name, email, phone, projectType, subject, message } = validationResult.data;
 
     // Send email via Resend
-    const { error: sendError } = await resend.emails.send({
+    const { error: sendError } = await getResend().emails.send({
       from: process.env.EMAIL_FROM || 'contact@elgato-photo.fr',
       to: process.env.CONTACT_EMAIL || 'contact@elgato-photo.fr',
       replyTo: email,
@@ -115,7 +126,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Send confirmation email to the user
-    await resend.emails.send({
+    await getResend().emails.send({
       from: process.env.EMAIL_FROM || 'contact@elgato-photo.fr',
       to: email,
       subject: 'Votre demande a bien été reçue - elGato Photo',
